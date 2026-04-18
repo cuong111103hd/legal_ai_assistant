@@ -57,6 +57,14 @@ services:
       - app_data:/app/data   # Persist BM25 index
     restart: unless-stopped
 
+  # ── Adminer (Web UI for PostgreSQL) ─────────────────────────────────────
+  adminer:
+    image: adminer:latest
+    container_name: legal_adminer
+    ports:
+      - "8081:8080"
+    restart: unless-stopped
+
 volumes:
   qdrant_data:
   postgres_data:

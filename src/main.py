@@ -18,7 +18,7 @@ import logging
 from contextlib import asynccontextmanager
 from typing import Optional
 
-from fastapi import BackgroundTasks, FastAPI, HTTPException
+from fastapi import BackgroundTasks, FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from sse_starlette.sse import EventSourceResponse
@@ -33,8 +33,10 @@ from .database_sql import (
     get_chat_messages,
     get_chat_session,
     get_legal_document,
+    get_unique_doc_types,
     init_db,
     list_chat_sessions,
+    list_legal_documents,
     update_chat_session_title,
 )
 from .generator import LegalRAGGenerator
@@ -52,6 +54,8 @@ from .models import (
     IngestState,
     IngestStatus,
     LegalAnswer,
+    LegalDocumentListItem,
+    LegalDocumentPaginationResponse,
     LegalDocumentResponse,
 )
 from .retriever import HybridRetriever
@@ -429,10 +433,54 @@ async def get_document(doc_id: str):
         id=doc.id,
         title=doc.title,
         clean_text=doc.clean_text or "",
-        doc_type=doc.doc_type or "",
-        document_number=doc.document_number or "",
-        validity_status=doc.validity_status or "",
+        doc_type=doc.doc_type,
+        document_number=doc.document_number,
+        validity_status=doc.validity_status,
+        issuing_body=doc.metadata_json.get("issuing_body", "Đang cập nhật") if isinstance(doc.metadata_json, dict) else "Đang cập nhật",
     )
+
+
+@app.get(
+    "/legal-documents",
+    tags=["Documents"],
+    response_model=LegalDocumentPaginationResponse,
+)
+async def get_legal_documents(
+    q: str | None = None, 
+    doc_type: str | None = None,
+    page: int = Query(1, ge=1), 
+    limit: int = Query(20, ge=1, le=100)
+):
+    """List legal documents with pagination and filtering."""
+    skip = (page - 1) * limit
+    docs, total = await list_legal_documents(query=q, doc_type=doc_type, skip=skip, limit=limit)
+    
+    items = [
+        LegalDocumentListItem(
+            id=d.id,
+            title=d.title or "",
+            doc_type=d.doc_type or "",
+            document_number=d.document_number or "",
+            validity_status=d.validity_status or "",
+            issuing_body=d.metadata_json.get("issuing_body", "Đang cập nhật") if isinstance(d.metadata_json, dict) else "Đang cập nhật",
+            created_at=d.created_at.isoformat() if d.created_at else "",
+        )
+        for d in docs
+    ]
+    
+    return LegalDocumentPaginationResponse(
+        items=items,
+        total=total,
+        page=page,
+        page_size=limit
+    )
+
+
+@app.get("/legal-documents/types", tags=["Documents"])
+async def get_legal_document_types():
+    """Returns a list of unique document types present in the library."""
+    types = await get_unique_doc_types()
+    return types
 
 
 # ---------------------------------------------------------------------------

@@ -206,6 +206,60 @@ async def upsert_legal_documents_batch(documents: list[dict], batch_size: int = 
     return total
 
 
+async def list_legal_documents(
+    query: str | None = None, 
+    doc_type: str | None = None, 
+    skip: int = 0, 
+    limit: int = 20
+) -> tuple[list[LegalDocument], int]:
+    """
+    List legal documents with pagination and filtering.
+    - If query is provided, searches by title (ILIKE).
+    - If doc_type is provided, filters by doc_type.
+    - Returns a tuple: (list of documents, total_count).
+    """
+    factory = get_session_factory()
+    async with factory() as session:
+        # Base query for items
+        stmt = select(LegalDocument)
+        
+        # Base query for count
+        count_stmt = select(func.count()).select_from(LegalDocument)
+        
+        # Apply filters
+        if query:
+            filter_expr = LegalDocument.title.ilike(f"%{query}%")
+            stmt = stmt.where(filter_expr)
+            count_stmt = count_stmt.where(filter_expr)
+            
+        if doc_type and doc_type != "Tất cả":
+            filter_expr = LegalDocument.doc_type == doc_type
+            stmt = stmt.where(filter_expr)
+            count_stmt = count_stmt.where(filter_expr)
+        
+        # Get total count
+        total_result = await session.execute(count_stmt)
+        total_count = total_result.scalar() or 0
+        
+        # Sort and paginate
+        stmt = stmt.order_by(LegalDocument.created_at.desc()).offset(skip).limit(limit)
+        
+        result = await session.execute(stmt)
+        items = list(result.scalars().all())
+        
+        return items, total_count
+
+
+async def get_unique_doc_types() -> list[str]:
+    """Returns a distinct list of doc_types available in the database."""
+    factory = get_session_factory()
+    async with factory() as session:
+        stmt = select(LegalDocument.doc_type).distinct().order_by(LegalDocument.doc_type)
+        result = await session.execute(stmt)
+        types = [t for t in result.scalars().all() if t]
+        return types
+
+
 # ---------------------------------------------------------------------------
 # Chat Session CRUD
 # ---------------------------------------------------------------------------

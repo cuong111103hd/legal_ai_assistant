@@ -230,3 +230,22 @@ class LegalDocumentResponse(BaseModel):
     doc_type: str = ""
     document_number: str = ""
     validity_status: str = ""
+    issuing_body: str = ""
+
+
+class LegalDocumentListItem(BaseModel):
+    """Metadata-only item for lists."""
+    id: str
+    title: str
+    doc_type: str = ""
+    document_number: str = ""
+    validity_status: str = ""
+    issuing_body: str = ""
+    created_at: str
+
+
+class LegalDocumentPaginationResponse(BaseModel):
+    items: list[LegalDocumentListItem]
+    total: int
+    page: int
+    page_size: int
