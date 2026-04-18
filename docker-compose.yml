@@ -1,0 +1,63 @@
+version: "3.9"
+
+services:
+  # ── Qdrant vector database ──────────────────────────────────────────────
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: legal_qdrant
+    ports:
+      - "6333:6333"   # REST API
+      - "6334:6334"   # gRPC
+    volumes:
+      - qdrant_data:/qdrant/storage
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── PostgreSQL relational database ──────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: legal_postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: legal_assistant
+      POSTGRES_USER: legal_user
+      POSTGRES_PASSWORD: legal_pass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U legal_user -d legal_assistant"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── FastAPI application ─────────────────────────────────────────────────
+  app:
+    build: .
+    container_name: legal_api
+    ports:
+      - "8000:8000"
+    env_file: .env
+    environment:
+      - QDRANT_HOST=qdrant
+      - QDRANT_PORT=6333
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+    depends_on:
+      qdrant:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    volumes:
+      - app_data:/app/data   # Persist BM25 index
+    restart: unless-stopped
+
+volumes:
+  qdrant_data:
+  postgres_data:
+  app_data:

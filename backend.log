@@ -1,0 +1,916 @@
+INFO:     Will watch for changes in these directories: ['/home/cuong/Desktop/python/VinUni/legal_AI_assistant']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [50919] using WatchFiles
+INFO:     Started server process [50968]
+INFO:     Waiting for application startup.
+2026-04-16 00:45:57,300 [INFO] src.main: 🚀 Starting Vietnamese Legal Assistant API …
+2026-04-16 00:45:57,300 [INFO] src.database: Using in-memory Qdrant (dev mode).
+2026-04-16 00:45:57,304 [INFO] src.retriever: Initialising HybridRetriever …
+2026-04-16 00:45:57,305 [INFO] sentence_transformers.base.model: No device provided, using cpu
+2026-04-16 00:45:57,376 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:45:57,616 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/modules.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:45:57,625 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/modules.json "HTTP/1.1 200 OK"
+2026-04-16 00:45:57,727 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:45:57,869 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/config_sentence_transformers.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:45:57,880 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/config_sentence_transformers.json "HTTP/1.1 200 OK"
+2026-04-16 00:45:57,881 [INFO] sentence_transformers.base.model: Loading SentenceTransformer model from Quockhanh05/Vietnam_legal_embeddings.
+2026-04-16 00:45:58,078 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:45:58,141 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/config_sentence_transformers.json "HTTP/1.1 307 Temporary Redirect"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-04-16 00:45:58,142 [WARNING] huggingface_hub.utils._http: Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-04-16 00:45:58,159 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/config_sentence_transformers.json "HTTP/1.1 200 OK"
+2026-04-16 00:45:58,417 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:45:58,426 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/README.md "HTTP/1.1 200 OK"
+2026-04-16 00:45:58,429 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:45:58,679 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/modules.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:45:58,706 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/modules.json "HTTP/1.1 200 OK"
+2026-04-16 00:45:58,780 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:45:59,087 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/sentence_bert_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:45:59,097 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/sentence_bert_config.json "HTTP/1.1 200 OK"
+2026-04-16 00:45:59,131 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:45:59,340 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/adapter_config.json "HTTP/1.1 404 Not Found"
+2026-04-16 00:45:59,481 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:45:59,596 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:45:59,607 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/config.json "HTTP/1.1 200 OK"
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 16733.15it/s]
+2026-04-16 00:45:59,832 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:45:59,929 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-04-16 00:46:00,173 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-04-16 00:46:00,183 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:00,420 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/video_preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-04-16 00:46:00,534 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:00,667 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-04-16 00:46:00,885 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:00,920 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:46:00,928 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-04-16 00:46:01,186 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:46:01,196 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/config.json "HTTP/1.1 200 OK"
+2026-04-16 00:46:01,236 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:01,448 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:46:01,457 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/config.json "HTTP/1.1 200 OK"
+2026-04-16 00:46:01,586 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:01,707 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:46:01,717 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-04-16 00:46:01,937 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:01,967 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:46:01,977 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-04-16 00:46:02,242 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Quockhanh05/Vietnam_legal_embeddings/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-04-16 00:46:02,288 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:02,517 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Quockhanh05/Vietnam_legal_embeddings/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-04-16 00:46:02,638 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:02,815 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:46:02,827 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-04-16 00:46:02,989 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:03,085 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Quockhanh05/Vietnam_legal_embeddings/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-04-16 00:46:03,340 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:03,387 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Quockhanh05/Vietnam_legal_embeddings/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-04-16 00:46:03,691 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:03,703 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/1_Pooling/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:46:03,714 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/1_Pooling%2Fconfig.json "HTTP/1.1 200 OK"
+2026-04-16 00:46:03,968 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Quockhanh05/Vietnam_legal_embeddings "HTTP/1.1 200 OK"
+2026-04-16 00:46:03,970 [INFO] src.database: Using in-memory Qdrant (dev mode).
+2026-04-16 00:46:03,975 [INFO] src.retriever: HybridRetriever ready.
+2026-04-16 00:46:03,987 [INFO] src.main: ✅ Retriever and generator initialised.
+INFO:     Application startup complete.
+2026-04-16 00:46:04,042 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:04,393 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:04,743 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:05,094 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:57718 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57720 - "POST /ingest HTTP/1.1" 200 OK
+2026-04-16 00:46:05,184 [INFO] src.ingestion: === Step 1/5: Loading dataset ===
+2026-04-16 00:46:05,185 [INFO] src.ingestion: Loading metadata from HuggingFace …
+INFO:     127.0.0.1:57736 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:46:05,445 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:05,509 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/datasets/th1nhng0/vietnamese-legal-documents/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:46:05,525 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/th1nhng0/vietnamese-legal-documents/87b4eb20b48c043af381e9d79b4f2ba53e162f4b/README.md "HTTP/1.1 200 OK"
+2026-04-16 00:46:05,774 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/datasets/th1nhng0/vietnamese-legal-documents/resolve/87b4eb20b48c043af381e9d79b4f2ba53e162f4b/vietnamese-legal-documents.py "HTTP/1.1 404 Not Found"
+2026-04-16 00:46:05,796 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:06,147 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:06,497 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:06,559 [INFO] httpx: HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/th1nhng0/vietnamese-legal-documents/th1nhng0/vietnamese-legal-documents.py "HTTP/1.1 404 Not Found"
+2026-04-16 00:46:06,802 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/datasets/th1nhng0/vietnamese-legal-documents/revision/87b4eb20b48c043af381e9d79b4f2ba53e162f4b "HTTP/1.1 200 OK"
+2026-04-16 00:46:06,848 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:07,057 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/datasets/th1nhng0/vietnamese-legal-documents/resolve/87b4eb20b48c043af381e9d79b4f2ba53e162f4b/.huggingface.yaml "HTTP/1.1 404 Not Found"
+2026-04-16 00:46:07,199 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:07,369 [INFO] httpx: HTTP Request: GET https://datasets-server.huggingface.co/info?dataset=th1nhng0/vietnamese-legal-documents "HTTP/1.1 200 OK"
+2026-04-16 00:46:07,549 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:07,617 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/datasets/th1nhng0/vietnamese-legal-documents/tree/87b4eb20b48c043af381e9d79b4f2ba53e162f4b/data?recursive=false&expand=false "HTTP/1.1 200 OK"
+2026-04-16 00:46:07,882 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/datasets/th1nhng0/vietnamese-legal-documents/resolve/87b4eb20b48c043af381e9d79b4f2ba53e162f4b/dataset_infos.json "HTTP/1.1 404 Not Found"
+2026-04-16 00:46:07,900 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:08,115 [INFO] src.ingestion: Loading content from HuggingFace …
+2026-04-16 00:46:08,250 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:08,601 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:08,603 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/datasets/th1nhng0/vietnamese-legal-documents/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:46:08,613 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/th1nhng0/vietnamese-legal-documents/87b4eb20b48c043af381e9d79b4f2ba53e162f4b/README.md "HTTP/1.1 200 OK"
+2026-04-16 00:46:08,863 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/datasets/th1nhng0/vietnamese-legal-documents/resolve/87b4eb20b48c043af381e9d79b4f2ba53e162f4b/vietnamese-legal-documents.py "HTTP/1.1 404 Not Found"
+2026-04-16 00:46:08,952 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:09,109 [INFO] httpx: HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/th1nhng0/vietnamese-legal-documents/th1nhng0/vietnamese-legal-documents.py "HTTP/1.1 404 Not Found"
+2026-04-16 00:46:09,303 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:09,366 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/datasets/th1nhng0/vietnamese-legal-documents/resolve/87b4eb20b48c043af381e9d79b4f2ba53e162f4b/.huggingface.yaml "HTTP/1.1 404 Not Found"
+2026-04-16 00:46:09,625 [INFO] httpx: HTTP Request: GET https://datasets-server.huggingface.co/info?dataset=th1nhng0/vietnamese-legal-documents "HTTP/1.1 200 OK"
+2026-04-16 00:46:09,653 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:09,871 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/datasets/th1nhng0/vietnamese-legal-documents/resolve/87b4eb20b48c043af381e9d79b4f2ba53e162f4b/dataset_infos.json "HTTP/1.1 404 Not Found"
+Generating data split: 0 examples [00:00, ? examples/s]2026-04-16 00:46:10,004 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:57752 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:46:10,355 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:10,705 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:11,056 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:11,407 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:11,758 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:12,108 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:12,459 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:12,810 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:13,161 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:13,511 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:13,862 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:14,213 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:14,563 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:14,914 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:47626 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:46:15,265 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:15,615 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:15,966 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:16,316 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:16,667 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:17,018 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:17,368 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:17,719 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:18,069 [INFO] watchfiles.main: 1 change detected
+Failed to read file '/home/cuong/.cache/huggingface/hub/datasets--th1nhng0--vietnamese-legal-documents/snapshots/87b4eb20b48c043af381e9d79b4f2ba53e162f4b/data/content.parquet' with error ArrowInvalid: Failed casting from large_string to string: input array too large
+2026-04-16 00:46:18,414 [ERROR] datasets.packaged_modules.parquet.parquet: Failed to read file '/home/cuong/.cache/huggingface/hub/datasets--th1nhng0--vietnamese-legal-documents/snapshots/87b4eb20b48c043af381e9d79b4f2ba53e162f4b/data/content.parquet' with error ArrowInvalid: Failed casting from large_string to string: input array too large
+Generating data split: 0 examples [00:08, ? examples/s]2026-04-16 00:46:18,420 [INFO] watchfiles.main: 1 change detected
+Generating data split: 0 examples [00:08, ? examples/s]
+2026-04-16 00:46:18,434 [ERROR] src.ingestion: ❌ Ingestion failed: An error occurred while generating the dataset
+Traceback (most recent call last):
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/datasets/builder.py", line 1872, in _prepare_split_single
+    for key, table in generator:
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/datasets/packaged_modules/parquet/parquet.py", line 209, in _generate_tables
+    yield Key(file_idx, batch_idx), self._cast_table(pa_table)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/datasets/packaged_modules/parquet/parquet.py", line 147, in _cast_table
+    pa_table = table_cast(pa_table, self.info.features.arrow_schema)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/datasets/table.py", line 2272, in table_cast
+    return cast_table_to_schema(table, schema)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/datasets/table.py", line 2224, in cast_table_to_schema
+    cast_array_to_feature(
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/datasets/table.py", line 1795, in wrapper
+    return pa.chunked_array([func(chunk, *args, **kwargs) for chunk in array.chunks])
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/datasets/table.py", line 2086, in cast_array_to_feature
+    return array_cast(
+           ^^^^^^^^^^^
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/datasets/table.py", line 1797, in wrapper
+    return func(array, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/datasets/table.py", line 1949, in array_cast
+    return array.cast(pa_type)
+           ^^^^^^^^^^^^^^^^^^^
+  File "pyarrow/array.pxi", line 1161, in pyarrow.lib.Array.cast
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/pyarrow/compute.py", line 414, in cast
+    return call_function("cast", [arr], options, memory_pool)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "pyarrow/_compute.pyx", line 604, in pyarrow._compute.call_function
+  File "pyarrow/_compute.pyx", line 399, in pyarrow._compute.Function.call
+  File "pyarrow/error.pxi", line 155, in pyarrow.lib.pyarrow_internal_check_status
+  File "pyarrow/error.pxi", line 92, in pyarrow.lib.check_status
+pyarrow.lib.ArrowInvalid: Failed casting from large_string to string: input array too large
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/src/ingestion.py", line 214, in run_ingestion
+    documents = _load_dataset(limit=limit)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/src/ingestion.py", line 85, in _load_dataset
+    content_ds = load_dataset(settings.DATASET_NAME, "content", split="data")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/datasets/load.py", line 1708, in load_dataset
+    builder_instance.download_and_prepare(
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/datasets/builder.py", line 884, in download_and_prepare
+    self._download_and_prepare(
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/datasets/builder.py", line 947, in _download_and_prepare
+    self._prepare_split(split_generator, **prepare_split_kwargs)
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/datasets/builder.py", line 1739, in _prepare_split
+    for job_id, done, content in self._prepare_split_single(
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/datasets/builder.py", line 1922, in _prepare_split_single
+    raise DatasetGenerationError("An error occurred while generating the dataset") from e
+datasets.exceptions.DatasetGenerationError: An error occurred while generating the dataset
+2026-04-16 00:46:18,582 [INFO] src.retriever: Initialising HybridRetriever …
+2026-04-16 00:46:18,583 [INFO] sentence_transformers.base.model: No device provided, using cpu
+2026-04-16 00:46:18,783 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:18,845 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/modules.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:46:18,854 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/modules.json "HTTP/1.1 200 OK"
+2026-04-16 00:46:19,108 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/config_sentence_transformers.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:46:19,120 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/config_sentence_transformers.json "HTTP/1.1 200 OK"
+2026-04-16 00:46:19,121 [INFO] sentence_transformers.base.model: Loading SentenceTransformer model from Quockhanh05/Vietnam_legal_embeddings.
+2026-04-16 00:46:19,134 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:19,371 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/config_sentence_transformers.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:46:19,381 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/config_sentence_transformers.json "HTTP/1.1 200 OK"
+2026-04-16 00:46:19,485 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:19,635 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:46:19,643 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/README.md "HTTP/1.1 200 OK"
+2026-04-16 00:46:19,836 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:19,897 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/modules.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:46:19,907 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/modules.json "HTTP/1.1 200 OK"
+2026-04-16 00:46:20,167 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/sentence_bert_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:46:20,177 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/sentence_bert_config.json "HTTP/1.1 200 OK"
+2026-04-16 00:46:20,187 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:47630 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:46:20,489 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/adapter_config.json "HTTP/1.1 404 Not Found"
+2026-04-16 00:46:20,537 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:20,776 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:46:20,784 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/config.json "HTTP/1.1 200 OK"
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 15668.02it/s]
+2026-04-16 00:46:20,888 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:21,077 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-04-16 00:46:21,238 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:21,410 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-04-16 00:46:21,589 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:21,659 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/video_preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-04-16 00:46:21,910 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-04-16 00:46:21,940 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:22,159 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:46:22,167 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-04-16 00:46:22,291 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:22,413 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:46:22,421 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/config.json "HTTP/1.1 200 OK"
+2026-04-16 00:46:22,642 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:22,676 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:46:22,685 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/config.json "HTTP/1.1 200 OK"
+2026-04-16 00:46:22,939 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:46:22,949 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-04-16 00:46:22,992 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:23,200 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:46:23,208 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-04-16 00:46:23,343 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:23,561 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Quockhanh05/Vietnam_legal_embeddings/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-04-16 00:46:23,694 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:23,868 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Quockhanh05/Vietnam_legal_embeddings/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-04-16 00:46:24,045 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:24,121 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:46:24,129 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-04-16 00:46:24,395 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:24,417 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Quockhanh05/Vietnam_legal_embeddings/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-04-16 00:46:24,695 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Quockhanh05/Vietnam_legal_embeddings/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-04-16 00:46:24,746 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:25,002 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/1_Pooling/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:46:25,011 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/1_Pooling%2Fconfig.json "HTTP/1.1 200 OK"
+2026-04-16 00:46:25,097 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:39344 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:46:25,258 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Quockhanh05/Vietnam_legal_embeddings "HTTP/1.1 200 OK"
+2026-04-16 00:46:25,260 [INFO] src.database: Using in-memory Qdrant (dev mode).
+2026-04-16 00:46:25,265 [INFO] src.retriever: HybridRetriever ready.
+2026-04-16 00:46:25,279 [INFO] src.main: ✅ Retriever reloaded after ingestion.
+2026-04-16 00:46:25,447 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:25,798 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:26,149 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:26,500 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:26,851 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:27,201 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:27,552 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:27,903 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:28,254 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:28,604 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:28,955 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:29,306 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:29,656 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:30,007 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:39348 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:46:30,358 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:30,708 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:31,059 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:31,410 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:31,761 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:32,112 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:32,462 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:32,813 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:33,164 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:33,515 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:33,865 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:34,216 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:34,567 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:34,918 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:35854 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:46:35,268 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:35,619 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:35,970 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:36,321 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:36,672 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:37,022 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:37,373 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:37,724 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:38,075 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:38,426 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:38,777 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:39,128 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:39,478 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:39,829 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:40,180 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:35864 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:46:40,531 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:40,881 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:41,232 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:41,583 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:41,933 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:42,284 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:42,635 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:42,986 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:43,337 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:43,688 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:44,038 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:44,389 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:44,740 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:45,091 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:53220 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:46:45,441 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:45,793 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:46,144 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:46,494 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:46,845 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:47,196 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:47,547 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:47,897 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:48,248 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:48,599 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:48,950 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:49,300 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:49,651 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:50,002 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:53226 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:46:50,353 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:50,704 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:51,055 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:51,405 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:51,756 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:52,106 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:52,457 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:52,808 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:53,158 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:53,509 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:53,859 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:54,210 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:54,561 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:54,911 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:55,262 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:40610 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:46:55,612 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:55,963 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:56,313 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:56,664 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:57,014 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:57,365 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:57,715 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:58,066 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:58,417 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:58,767 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:59,118 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:59,469 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:46:59,820 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:00,170 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:40612 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:47:00,521 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:00,872 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:01,222 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:01,573 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:01,923 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:02,274 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:02,625 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:02,975 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:03,326 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:03,676 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:04,027 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:04,378 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:04,728 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:05,079 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:49980 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:47:05,429 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:05,780 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:06,131 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:06,482 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:06,832 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:07,183 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:07,533 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:07,884 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:08,235 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:08,585 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:08,936 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:09,286 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:09,637 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:09,988 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:49996 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:47:10,339 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:10,689 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:11,040 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:11,391 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:11,742 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:12,093 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:12,444 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:12,795 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:13,146 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:13,497 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:13,847 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:14,198 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:14,549 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:14,900 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:15,251 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:34978 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:47:15,601 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:15,952 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:16,303 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:16,654 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:17,005 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:17,355 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:17,706 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:18,057 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:18,408 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:18,759 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:19,109 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:19,460 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:19,811 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:20,162 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:34982 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:47:20,513 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:20,863 [INFO] watchfiles.main: 2 changes detected
+WARNING:  WatchFiles detected changes in 'src/ingestion.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+2026-04-16 00:47:21,024 [INFO] src.main: 👋 Shutting down …
+INFO:     Application shutdown complete.
+INFO:     Finished server process [50968]
+2026-04-16 00:47:21,440 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:21,791 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:22,141 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:22,492 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:22,842 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:23,193 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:23,544 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:23,895 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:24,245 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:24,596 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:24,947 [INFO] watchfiles.main: 1 change detected
+INFO:     Started server process [51212]
+INFO:     Waiting for application startup.
+2026-04-16 00:47:25,261 [INFO] src.main: 🚀 Starting Vietnamese Legal Assistant API …
+2026-04-16 00:47:25,261 [INFO] src.database: Using in-memory Qdrant (dev mode).
+2026-04-16 00:47:25,265 [INFO] src.retriever: Initialising HybridRetriever …
+2026-04-16 00:47:25,266 [INFO] sentence_transformers.base.model: No device provided, using cpu
+2026-04-16 00:47:25,297 [INFO] watchfiles.main: 4 changes detected
+2026-04-16 00:47:25,616 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/modules.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:47:25,627 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/modules.json "HTTP/1.1 200 OK"
+2026-04-16 00:47:25,648 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:25,873 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/config_sentence_transformers.json "HTTP/1.1 307 Temporary Redirect"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-04-16 00:47:25,873 [WARNING] huggingface_hub.utils._http: Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-04-16 00:47:25,883 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/config_sentence_transformers.json "HTTP/1.1 200 OK"
+2026-04-16 00:47:25,884 [INFO] sentence_transformers.base.model: Loading SentenceTransformer model from Quockhanh05/Vietnam_legal_embeddings.
+2026-04-16 00:47:25,999 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:26,139 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/config_sentence_transformers.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:47:26,147 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/config_sentence_transformers.json "HTTP/1.1 200 OK"
+2026-04-16 00:47:26,349 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:26,395 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:47:26,403 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/README.md "HTTP/1.1 200 OK"
+2026-04-16 00:47:26,651 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/modules.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:47:26,661 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/modules.json "HTTP/1.1 200 OK"
+2026-04-16 00:47:26,700 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:26,914 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/sentence_bert_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:47:26,922 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/sentence_bert_config.json "HTTP/1.1 200 OK"
+2026-04-16 00:47:27,051 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:27,168 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/adapter_config.json "HTTP/1.1 404 Not Found"
+2026-04-16 00:47:27,402 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:27,421 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:47:27,430 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/config.json "HTTP/1.1 200 OK"
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 15472.26it/s]
+2026-04-16 00:47:27,753 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:27,776 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-04-16 00:47:28,075 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-04-16 00:47:28,103 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:28,338 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/video_preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-04-16 00:47:28,454 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:28,642 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-04-16 00:47:28,805 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:28,997 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:47:29,006 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-04-16 00:47:29,156 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:29,263 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:47:29,272 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/config.json "HTTP/1.1 200 OK"
+2026-04-16 00:47:29,507 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:29,528 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:47:29,538 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/config.json "HTTP/1.1 200 OK"
+2026-04-16 00:47:29,794 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:47:29,803 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-04-16 00:47:29,857 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:30,057 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:47:30,068 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-04-16 00:47:30,208 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:30,317 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Quockhanh05/Vietnam_legal_embeddings/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-04-16 00:47:30,559 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:30,568 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Quockhanh05/Vietnam_legal_embeddings/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-04-16 00:47:30,910 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:30,933 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:47:30,941 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-04-16 00:47:31,195 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Quockhanh05/Vietnam_legal_embeddings/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-04-16 00:47:31,261 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:31,454 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Quockhanh05/Vietnam_legal_embeddings/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-04-16 00:47:31,612 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:31,865 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/1_Pooling/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:47:31,875 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/1_Pooling%2Fconfig.json "HTTP/1.1 200 OK"
+2026-04-16 00:47:31,963 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:32,118 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Quockhanh05/Vietnam_legal_embeddings "HTTP/1.1 200 OK"
+2026-04-16 00:47:32,122 [INFO] src.database: Using in-memory Qdrant (dev mode).
+2026-04-16 00:47:32,129 [INFO] src.retriever: HybridRetriever ready.
+2026-04-16 00:47:32,141 [INFO] src.main: ✅ Retriever and generator initialised.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:38554 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:47:32,313 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:32,664 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:33,015 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:33,366 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:33,717 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:34,067 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:34,418 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:34,769 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:35,119 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:35,470 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:35,821 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:36,172 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:36,522 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:36,873 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:45840 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:47:37,224 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:45842 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45852 - "POST /ingest HTTP/1.1" 200 OK
+2026-04-16 00:47:37,511 [INFO] src.ingestion: === Step 1/5: Loading dataset ===
+2026-04-16 00:47:37,511 [INFO] src.ingestion: Loading metadata from HuggingFace (streaming) …
+INFO:     127.0.0.1:45854 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:47:37,574 [INFO] watchfiles.main: 2 changes detected
+2026-04-16 00:47:37,781 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/datasets/th1nhng0/vietnamese-legal-documents/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:47:37,789 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/th1nhng0/vietnamese-legal-documents/87b4eb20b48c043af381e9d79b4f2ba53e162f4b/README.md "HTTP/1.1 200 OK"
+2026-04-16 00:47:37,925 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:38,036 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/datasets/th1nhng0/vietnamese-legal-documents/resolve/87b4eb20b48c043af381e9d79b4f2ba53e162f4b/vietnamese-legal-documents.py "HTTP/1.1 404 Not Found"
+2026-04-16 00:47:38,275 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:38,626 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:38,770 [INFO] httpx: HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/th1nhng0/vietnamese-legal-documents/th1nhng0/vietnamese-legal-documents.py "HTTP/1.1 404 Not Found"
+2026-04-16 00:47:38,976 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:39,032 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/datasets/th1nhng0/vietnamese-legal-documents/revision/87b4eb20b48c043af381e9d79b4f2ba53e162f4b "HTTP/1.1 200 OK"
+2026-04-16 00:47:39,286 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/datasets/th1nhng0/vietnamese-legal-documents/resolve/87b4eb20b48c043af381e9d79b4f2ba53e162f4b/.huggingface.yaml "HTTP/1.1 404 Not Found"
+2026-04-16 00:47:39,327 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:39,600 [INFO] httpx: HTTP Request: GET https://datasets-server.huggingface.co/info?dataset=th1nhng0/vietnamese-legal-documents "HTTP/1.1 200 OK"
+2026-04-16 00:47:39,677 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:39,858 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/datasets/th1nhng0/vietnamese-legal-documents/tree/87b4eb20b48c043af381e9d79b4f2ba53e162f4b/data?recursive=false&expand=false "HTTP/1.1 200 OK"
+2026-04-16 00:47:40,028 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:40,111 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/datasets/th1nhng0/vietnamese-legal-documents/resolve/87b4eb20b48c043af381e9d79b4f2ba53e162f4b/dataset_infos.json "HTTP/1.1 404 Not Found"
+2026-04-16 00:47:40,123 [INFO] src.ingestion: Loading content from HuggingFace (streaming) …
+2026-04-16 00:47:40,377 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/datasets/th1nhng0/vietnamese-legal-documents/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:47:40,379 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:40,386 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/th1nhng0/vietnamese-legal-documents/87b4eb20b48c043af381e9d79b4f2ba53e162f4b/README.md "HTTP/1.1 200 OK"
+2026-04-16 00:47:40,649 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/datasets/th1nhng0/vietnamese-legal-documents/resolve/87b4eb20b48c043af381e9d79b4f2ba53e162f4b/vietnamese-legal-documents.py "HTTP/1.1 404 Not Found"
+2026-04-16 00:47:40,729 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:40,890 [INFO] httpx: HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/th1nhng0/vietnamese-legal-documents/th1nhng0/vietnamese-legal-documents.py "HTTP/1.1 404 Not Found"
+2026-04-16 00:47:41,080 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:41,151 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/datasets/th1nhng0/vietnamese-legal-documents/resolve/87b4eb20b48c043af381e9d79b4f2ba53e162f4b/.huggingface.yaml "HTTP/1.1 404 Not Found"
+2026-04-16 00:47:41,412 [INFO] httpx: HTTP Request: GET https://datasets-server.huggingface.co/info?dataset=th1nhng0/vietnamese-legal-documents "HTTP/1.1 200 OK"
+2026-04-16 00:47:41,431 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:41,656 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/datasets/th1nhng0/vietnamese-legal-documents/resolve/87b4eb20b48c043af381e9d79b4f2ba53e162f4b/dataset_infos.json "HTTP/1.1 404 Not Found"
+2026-04-16 00:47:41,781 [INFO] watchfiles.main: 2 changes detected
+2026-04-16 00:47:41,908 [INFO] httpx: HTTP Request: GET https://huggingface.co/datasets/th1nhng0/vietnamese-legal-documents/resolve/87b4eb20b48c043af381e9d79b4f2ba53e162f4b/data/metadata.parquet "HTTP/1.1 302 Found"
+2026-04-16 00:47:41,960 [INFO] httpx: HTTP Request: GET https://cas-bridge.xethub.hf.co/xet-bridge-us/69cbf7b3135cd01586280dc6/5ba0dfadb6923c23cac52b5a3ff4f8a815f0f45563f80105c4d5a51e231f1c44?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=cas%2F20260415%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260415T174741Z&X-Amz-Expires=3600&X-Amz-Signature=e5236f7a782a8e943554efbf849da3e82c71969f7d6529aec48095cd5b77c6c2&X-Amz-SignedHeaders=host&X-Xet-Cas-Uid=public&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27metadata.parquet%3B+filename%3D%22metadata.parquet%22%3B&x-amz-checksum-mode=ENABLED&x-id=GetObject&Expires=1776278861&Policy=eyJTdGF0ZW1lbnQiOlt7IkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc3NjI3ODg2MX19LCJSZXNvdXJjZSI6Imh0dHBzOi8vY2FzLWJyaWRnZS54ZXRodWIuaGYuY28veGV0LWJyaWRnZS11cy82OWNiZjdiMzEzNWNkMDE1ODYyODBkYzYvNWJhMGRmYWRiNjkyM2MyM2NhYzUyYjVhM2ZmNGY4YTgxNWYwZjQ1NTYzZjgwMTA1YzRkNWE1MWUyMzFmMWM0NCoifV19&Signature=bW7RDOzi7czB5Jj6QPOt%7EWPy9tbDy0cf5i1Q8a9v5z6CA5Fk2bPAPeqOzRVoOjUB1lnN9Pu1A7Ui1DeaHtmycaGsQnswj5LUJmIt98Vg%7EqYm3WUNSC%7EshNvDhtg12j8Sv7cemR6kKS4snp8-qh1Ilvxunn8lLOzo5aVJXwjaO-p4vq4YNdHE8zXCC9kmn7qTRJUsBDl1J-J129OSLRatCZjP41BBAPxnnTdLoTsYONATThNiSWHhP%7EkwChNsF5BmtYzHrl5ropGJSKweHO8Js1M0ZPHcVMZqIzjip0MGvQ2mv6R-avLPu47KYiZyHvpX9FiWfXJ-Ka5hddyutvkM3w__&Key-Pair-Id=K2L8F4GPSG1IFC "HTTP/1.1 206 Partial Content"
+2026-04-16 00:47:42,132 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:45862 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:47:42,251 [INFO] httpx: HTTP Request: GET https://huggingface.co/datasets/th1nhng0/vietnamese-legal-documents/resolve/87b4eb20b48c043af381e9d79b4f2ba53e162f4b/data/metadata.parquet "HTTP/1.1 302 Found"
+2026-04-16 00:47:42,259 [INFO] httpx: HTTP Request: GET https://cas-bridge.xethub.hf.co/xet-bridge-us/69cbf7b3135cd01586280dc6/5ba0dfadb6923c23cac52b5a3ff4f8a815f0f45563f80105c4d5a51e231f1c44?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=cas%2F20260415%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260415T174742Z&X-Amz-Expires=3600&X-Amz-Signature=5aaa70676ed3178466cd80770e8f3b94316ec5af7f023fc1a5ba8e0facd31f7e&X-Amz-SignedHeaders=host&X-Xet-Cas-Uid=public&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27metadata.parquet%3B+filename%3D%22metadata.parquet%22%3B&x-amz-checksum-mode=ENABLED&x-id=GetObject&Expires=1776278862&Policy=eyJTdGF0ZW1lbnQiOlt7IkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc3NjI3ODg2Mn19LCJSZXNvdXJjZSI6Imh0dHBzOi8vY2FzLWJyaWRnZS54ZXRodWIuaGYuY28veGV0LWJyaWRnZS11cy82OWNiZjdiMzEzNWNkMDE1ODYyODBkYzYvNWJhMGRmYWRiNjkyM2MyM2NhYzUyYjVhM2ZmNGY4YTgxNWYwZjQ1NTYzZjgwMTA1YzRkNWE1MWUyMzFmMWM0NCoifV19&Signature=AIgIEErOpU%7EtzlDAMBgGNTxnP7FEstOxqvLj4n6%7ET714WjHeqAE02UmEZJ5xYCzRYyzfPLp7TUnEQppX2V1bCgZpFuIM3OTFs-TOviCxw3PbYn96gfvVmDk5oeSbAhRt9s1txnaJNaLPndiTPbTi0KGCrXl2gd9g%7Elz20FcOsr9%7Ez2Vlix8PaFEOtAbn0zFeIkmFKAkh69aEhaq66Q8ph-ds4QH%7E9ssqI94yCHiFGTSwg7e6u4WWl%7EcGNAFCg470Ybx9qea258NNDuxTAvxX5eu2WRUiqwJMishJT0w%7ED9kECdKbwOX0JBIpE40QgLCuPLAplK6H04vC7RqKofm1Eg__&Key-Pair-Id=K2L8F4GPSG1IFC "HTTP/1.1 206 Partial Content"
+2026-04-16 00:47:42,483 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:45866 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:47:42,833 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:43,184 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:43,535 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:43,885 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:44,236 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:44,586 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:44,937 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:45,288 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:45,638 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:45,989 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:46,339 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:46,690 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:47,041 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:33852 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:47:47,392 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:33864 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:47:47,742 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:48,093 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:48,444 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:48,795 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:49,145 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:49,496 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:49,847 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:50,197 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:50,548 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:50,899 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:51,249 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:51,600 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:51,950 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:33870 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:47:52,301 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:33880 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:47:52,652 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:53,002 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:53,353 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:53,704 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:54,055 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:54,405 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:54,756 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:55,106 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:55,457 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:55,808 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:56,158 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:56,509 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:56,860 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:33730 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:47:57,210 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:33746 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:47:57,561 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:57,912 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:58,262 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:58,613 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:58,963 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:59,314 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:47:59,664 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:00,015 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:00,366 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:00,716 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:01,067 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:01,417 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:01,577 [INFO] src.ingestion: Loaded metadata for 153420 documents.
+2026-04-16 00:48:01,768 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:01,874 [INFO] httpx: HTTP Request: GET https://huggingface.co/datasets/th1nhng0/vietnamese-legal-documents/resolve/87b4eb20b48c043af381e9d79b4f2ba53e162f4b/data/content.parquet "HTTP/1.1 302 Found"
+2026-04-16 00:48:01,904 [INFO] httpx: HTTP Request: GET https://cas-bridge.xethub.hf.co/xet-bridge-us/69cbf7b3135cd01586280dc6/ccf19e30e0277c26c9aad948fc29dfecf09b65e4d28133593899ab83ce1be791?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=cas%2F20260415%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260415T174801Z&X-Amz-Expires=3600&X-Amz-Signature=02f196f84001c2b73c36f73ebce36b3fa93c528101e5c62018c4148a5d9dc66a&X-Amz-SignedHeaders=host&X-Xet-Cas-Uid=public&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27content.parquet%3B+filename%3D%22content.parquet%22%3B&x-amz-checksum-mode=ENABLED&x-id=GetObject&Expires=1776278881&Policy=eyJTdGF0ZW1lbnQiOlt7IkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc3NjI3ODg4MX19LCJSZXNvdXJjZSI6Imh0dHBzOi8vY2FzLWJyaWRnZS54ZXRodWIuaGYuY28veGV0LWJyaWRnZS11cy82OWNiZjdiMzEzNWNkMDE1ODYyODBkYzYvY2NmMTllMzBlMDI3N2MyNmM5YWFkOTQ4ZmMyOWRmZWNmMDliNjVlNGQyODEzMzU5Mzg5OWFiODNjZTFiZTc5MSoifV19&Signature=lypGVXchTbpcKVcbUb38u43YQXY-q7eCqpKDdLNNXfzfQlwc3knBQov9VwknypPCkrz0tq-KFplBmSWp26vziEp2%7EF4BGAftBMtRtvUxABEP-HV%7EsrA77bOyyZQraYf65LrIV-VpF9EChc47LOkPr7NVWVPARlXavW%7E-2LUW06diXZmg%7EWRPXMW5pWQ9K5wluWzj%7Eiy5jO-HzBUWPdLxWXftzNp9DjX%7E5Azq0loVVHv%7ECDDb80kJtqzPM-nP%7EA9ZZrfOQtRu9O8LeL5cnQ5sxyvp0CBsbYYVGv6LlrmqxIko9RGvbrXRuGpA4gmKr9iGFVKyXZViwUwLdOiUfAI3nA__&Key-Pair-Id=K2L8F4GPSG1IFC "HTTP/1.1 206 Partial Content"
+2026-04-16 00:48:02,119 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:02,173 [INFO] httpx: HTTP Request: GET https://huggingface.co/datasets/th1nhng0/vietnamese-legal-documents/resolve/87b4eb20b48c043af381e9d79b4f2ba53e162f4b/data/content.parquet "HTTP/1.1 302 Found"
+2026-04-16 00:48:02,181 [INFO] httpx: HTTP Request: GET https://cas-bridge.xethub.hf.co/xet-bridge-us/69cbf7b3135cd01586280dc6/ccf19e30e0277c26c9aad948fc29dfecf09b65e4d28133593899ab83ce1be791?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=cas%2F20260415%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260415T174802Z&X-Amz-Expires=3600&X-Amz-Signature=3a6c8481d617c72a1a6f2a1950f4c29a1b2c827f53302aab87f31a551ce9d63b&X-Amz-SignedHeaders=host&X-Xet-Cas-Uid=public&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27content.parquet%3B+filename%3D%22content.parquet%22%3B&x-amz-checksum-mode=ENABLED&x-id=GetObject&Expires=1776278882&Policy=eyJTdGF0ZW1lbnQiOlt7IkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc3NjI3ODg4Mn19LCJSZXNvdXJjZSI6Imh0dHBzOi8vY2FzLWJyaWRnZS54ZXRodWIuaGYuY28veGV0LWJyaWRnZS11cy82OWNiZjdiMzEzNWNkMDE1ODYyODBkYzYvY2NmMTllMzBlMDI3N2MyNmM5YWFkOTQ4ZmMyOWRmZWNmMDliNjVlNGQyODEzMzU5Mzg5OWFiODNjZTFiZTc5MSoifV19&Signature=nxHd9izcieCwrGf1mKhjpoRYnS7zPV%7EKQ-bxL3M%7EHv6fxiDOXkg38u9QwiKwllupYOq4gcIaiCf4pHxgn4AuXmcoAVq5aYjwsrG0lUg-jAxfIO5HXkfICs0qPD0q-5pKcfqT3TXHbaHf0VvJrQKcJF7nrJnWIQbM8OkB4q6g2TARsoZdPUM22gmFLrMxLWJILEXQHtodGLSiU9rGDB9bnkRMQaGkduuJD6vWgoLFjBz75tOj-aiQMAP4UpruFbp-Ean1EI0Y5qXFRK6JYXVcQzEexTq0vvWmqmZ2OeCgIT2Il%7EAv1EVhW3WkBE4f5GaMfoVdk21QJWBjmcoTYLpTKA__&Key-Pair-Id=K2L8F4GPSG1IFC "HTTP/1.1 206 Partial Content"
+INFO:     127.0.0.1:33754 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:48:02,427 [INFO] httpx: HTTP Request: GET https://huggingface.co/datasets/th1nhng0/vietnamese-legal-documents/resolve/87b4eb20b48c043af381e9d79b4f2ba53e162f4b/data/content.parquet "HTTP/1.1 302 Found"
+2026-04-16 00:48:02,435 [INFO] httpx: HTTP Request: GET https://cas-bridge.xethub.hf.co/xet-bridge-us/69cbf7b3135cd01586280dc6/ccf19e30e0277c26c9aad948fc29dfecf09b65e4d28133593899ab83ce1be791?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=cas%2F20260415%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260415T174802Z&X-Amz-Expires=3600&X-Amz-Signature=3a6c8481d617c72a1a6f2a1950f4c29a1b2c827f53302aab87f31a551ce9d63b&X-Amz-SignedHeaders=host&X-Xet-Cas-Uid=public&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27content.parquet%3B+filename%3D%22content.parquet%22%3B&x-amz-checksum-mode=ENABLED&x-id=GetObject&Expires=1776278882&Policy=eyJTdGF0ZW1lbnQiOlt7IkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc3NjI3ODg4Mn19LCJSZXNvdXJjZSI6Imh0dHBzOi8vY2FzLWJyaWRnZS54ZXRodWIuaGYuY28veGV0LWJyaWRnZS11cy82OWNiZjdiMzEzNWNkMDE1ODYyODBkYzYvY2NmMTllMzBlMDI3N2MyNmM5YWFkOTQ4ZmMyOWRmZWNmMDliNjVlNGQyODEzMzU5Mzg5OWFiODNjZTFiZTc5MSoifV19&Signature=nxHd9izcieCwrGf1mKhjpoRYnS7zPV%7EKQ-bxL3M%7EHv6fxiDOXkg38u9QwiKwllupYOq4gcIaiCf4pHxgn4AuXmcoAVq5aYjwsrG0lUg-jAxfIO5HXkfICs0qPD0q-5pKcfqT3TXHbaHf0VvJrQKcJF7nrJnWIQbM8OkB4q6g2TARsoZdPUM22gmFLrMxLWJILEXQHtodGLSiU9rGDB9bnkRMQaGkduuJD6vWgoLFjBz75tOj-aiQMAP4UpruFbp-Ean1EI0Y5qXFRK6JYXVcQzEexTq0vvWmqmZ2OeCgIT2Il%7EAv1EVhW3WkBE4f5GaMfoVdk21QJWBjmcoTYLpTKA__&Key-Pair-Id=K2L8F4GPSG1IFC "HTTP/1.1 206 Partial Content"
+2026-04-16 00:48:02,470 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:33766 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:48:02,808 [INFO] httpx: HTTP Request: GET https://huggingface.co/datasets/th1nhng0/vietnamese-legal-documents/resolve/87b4eb20b48c043af381e9d79b4f2ba53e162f4b/data/content.parquet "HTTP/1.1 302 Found"
+2026-04-16 00:48:02,818 [INFO] httpx: HTTP Request: GET https://cas-bridge.xethub.hf.co/xet-bridge-us/69cbf7b3135cd01586280dc6/ccf19e30e0277c26c9aad948fc29dfecf09b65e4d28133593899ab83ce1be791?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=cas%2F20260415%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260415T174652Z&X-Amz-Expires=3600&X-Amz-Signature=60f69902e96f39fa6125ca1fc15ab323dbf1879bbb25a8be261b99941f23a76e&X-Amz-SignedHeaders=host&X-Xet-Cas-Uid=public&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27content.parquet%3B+filename%3D%22content.parquet%22%3B&x-amz-checksum-mode=ENABLED&x-id=GetObject&Expires=1776278812&Policy=eyJTdGF0ZW1lbnQiOlt7IkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc3NjI3ODgxMn19LCJSZXNvdXJjZSI6Imh0dHBzOi8vY2FzLWJyaWRnZS54ZXRodWIuaGYuY28veGV0LWJyaWRnZS11cy82OWNiZjdiMzEzNWNkMDE1ODYyODBkYzYvY2NmMTllMzBlMDI3N2MyNmM5YWFkOTQ4ZmMyOWRmZWNmMDliNjVlNGQyODEzMzU5Mzg5OWFiODNjZTFiZTc5MSoifV19&Signature=QoOFfdc00xfpfGzaurYJ7cD7TyuC9Bqhhj566OAbxFNUorhYd0gFp17Xqkg2A-JQEhFcOZ1acyhmF98ekRSqDM5Bxfi0rGBPu%7E52a%7EEAi6cjLXOvX5amO-sqB0a3QAJDXzWb0f8BH7TPwwuJW%7EbAJni1OPNs42EfBXU72MEM7TPoRDQL6AGzM0sg151Cnd7aHGcvlIZDGVA2LCTB70JSRrSyxD4JSMShEnbtbAQSTKFaGa1J8pcNtyVQRme%7E1x7a8e-R-QctcXKZ5JaBtoOYgghrwr5-FnXXg6XNGTWmLeknRx5MacANLB7OoomdBcPyPYCagWbKEWYfV3XuwFkXzg__&Key-Pair-Id=K2L8F4GPSG1IFC "HTTP/1.1 206 Partial Content"
+2026-04-16 00:48:02,820 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:03,171 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:03,521 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:03,872 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:04,222 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:04,573 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:04,923 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:05,274 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:05,625 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:05,976 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:06,326 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:06,677 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:07,028 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:38084 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:48:07,378 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:38088 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:48:07,729 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:08,080 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:08,430 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:08,781 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:09,132 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:09,483 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:09,833 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:10,184 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:10,535 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:10,886 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:11,236 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:11,587 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:11,938 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:38104 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:48:12,288 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:38110 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:48:12,639 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:12,825 [INFO] httpx: HTTP Request: GET https://huggingface.co/datasets/th1nhng0/vietnamese-legal-documents/resolve/87b4eb20b48c043af381e9d79b4f2ba53e162f4b/data/content.parquet "HTTP/1.1 302 Found"
+2026-04-16 00:48:12,848 [INFO] httpx: HTTP Request: GET https://cas-bridge.xethub.hf.co/xet-bridge-us/69cbf7b3135cd01586280dc6/ccf19e30e0277c26c9aad948fc29dfecf09b65e4d28133593899ab83ce1be791?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=cas%2F20260415%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260415T174812Z&X-Amz-Expires=3600&X-Amz-Signature=1a1dc3c0dd01aeb01c7831fc642e6a9fa0998d68b4c4cd58a55a7bcddb0925b6&X-Amz-SignedHeaders=host&X-Xet-Cas-Uid=public&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27content.parquet%3B+filename%3D%22content.parquet%22%3B&x-amz-checksum-mode=ENABLED&x-id=GetObject&Expires=1776278892&Policy=eyJTdGF0ZW1lbnQiOlt7IkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc3NjI3ODg5Mn19LCJSZXNvdXJjZSI6Imh0dHBzOi8vY2FzLWJyaWRnZS54ZXRodWIuaGYuY28veGV0LWJyaWRnZS11cy82OWNiZjdiMzEzNWNkMDE1ODYyODBkYzYvY2NmMTllMzBlMDI3N2MyNmM5YWFkOTQ4ZmMyOWRmZWNmMDliNjVlNGQyODEzMzU5Mzg5OWFiODNjZTFiZTc5MSoifV19&Signature=ml5br%7EypTEc0VihC20PtvU3dM%7E0Gfd2iGXghe4-q4NWkq7%7EuOO6TKLsMfxkLPqvuxjNLeQN%7EW035c1FSTngolsNQAbYsVEDmfTw3EGdHtT9GWlg1Cdj2iEY5F64EbbBVFRlH3RVsHUIAAbwwcT2-ESeyldIXfoOU7qH6ARZOjmxKICpo5I26eAY4%7EuK7XSutTxPVaRl9PLmTtQ9YTiawfzqavi%7EN-4gpEgSa7NUvJOy83MGPi6aKCKACTAQ2MFVkIZ8dtqn4Kpaaq0ZFVVsaN2N%7ERqc-g%7EdgoyUX3srpVKTeeCTnODGWhupXyPgsDoaB1I4XzizKOAUxALXNusR9ag__&Key-Pair-Id=K2L8F4GPSG1IFC "HTTP/1.1 206 Partial Content"
+2026-04-16 00:48:12,990 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:13,340 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:13,691 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:14,042 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:14,392 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:14,743 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:15,094 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:15,445 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:15,796 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:16,147 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:16,497 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:16,848 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:17,199 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:50142 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:48:17,549 [INFO] watchfiles.main: 1 change detected
+Failed to read file 'hf://datasets/th1nhng0/vietnamese-legal-documents@87b4eb20b48c043af381e9d79b4f2ba53e162f4b/data/content.parquet' with error ArrowInvalid: Failed casting from large_string to string: input array too large
+2026-04-16 00:48:17,584 [ERROR] datasets.packaged_modules.parquet.parquet: Failed to read file 'hf://datasets/th1nhng0/vietnamese-legal-documents@87b4eb20b48c043af381e9d79b4f2ba53e162f4b/data/content.parquet' with error ArrowInvalid: Failed casting from large_string to string: input array too large
+2026-04-16 00:48:17,585 [ERROR] src.ingestion: ❌ Ingestion failed: Failed casting from large_string to string: input array too large
+Traceback (most recent call last):
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/src/ingestion.py", line 223, in run_ingestion
+    documents = _load_dataset(limit=limit)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/src/ingestion.py", line 105, in _load_dataset
+    for row in content_ds:
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/datasets/iterable_dataset.py", line 2690, in __iter__
+    for key, example in ex_iterable:
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/datasets/iterable_dataset.py", line 2227, in __iter__
+    for key, pa_table in self._iter_arrow():
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/datasets/iterable_dataset.py", line 2251, in _iter_arrow
+    for key, pa_table in self.ex_iterable._iter_arrow():
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/datasets/iterable_dataset.py", line 494, in _iter_arrow
+    for key, pa_table in iterator:
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/datasets/iterable_dataset.py", line 384, in _iter_arrow
+    for key, pa_table in self.generate_tables_fn(**gen_kwags):
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/datasets/packaged_modules/parquet/parquet.py", line 209, in _generate_tables
+    yield Key(file_idx, batch_idx), self._cast_table(pa_table)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/datasets/packaged_modules/parquet/parquet.py", line 147, in _cast_table
+    pa_table = table_cast(pa_table, self.info.features.arrow_schema)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/datasets/table.py", line 2272, in table_cast
+    return cast_table_to_schema(table, schema)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/datasets/table.py", line 2224, in cast_table_to_schema
+    cast_array_to_feature(
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/datasets/table.py", line 1795, in wrapper
+    return pa.chunked_array([func(chunk, *args, **kwargs) for chunk in array.chunks])
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/datasets/table.py", line 2086, in cast_array_to_feature
+    return array_cast(
+           ^^^^^^^^^^^
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/datasets/table.py", line 1797, in wrapper
+    return func(array, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/datasets/table.py", line 1949, in array_cast
+    return array.cast(pa_type)
+           ^^^^^^^^^^^^^^^^^^^
+  File "pyarrow/array.pxi", line 1161, in pyarrow.lib.Array.cast
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/pyarrow/compute.py", line 414, in cast
+    return call_function("cast", [arr], options, memory_pool)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "pyarrow/_compute.pyx", line 604, in pyarrow._compute.call_function
+  File "pyarrow/_compute.pyx", line 399, in pyarrow._compute.Function.call
+  File "pyarrow/error.pxi", line 155, in pyarrow.lib.pyarrow_internal_check_status
+  File "pyarrow/error.pxi", line 92, in pyarrow.lib.check_status
+pyarrow.lib.ArrowInvalid: Failed casting from large_string to string: input array too large
+2026-04-16 00:48:17,827 [INFO] src.retriever: Initialising HybridRetriever …
+INFO:     127.0.0.1:50156 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:48:17,829 [INFO] sentence_transformers.base.model: No device provided, using cpu
+2026-04-16 00:48:17,900 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:18,140 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/modules.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:48:18,152 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/modules.json "HTTP/1.1 200 OK"
+2026-04-16 00:48:18,250 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:18,396 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/config_sentence_transformers.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:48:18,405 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/config_sentence_transformers.json "HTTP/1.1 200 OK"
+2026-04-16 00:48:18,406 [INFO] sentence_transformers.base.model: Loading SentenceTransformer model from Quockhanh05/Vietnam_legal_embeddings.
+2026-04-16 00:48:18,601 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:18,661 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/config_sentence_transformers.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:48:18,672 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/config_sentence_transformers.json "HTTP/1.1 200 OK"
+2026-04-16 00:48:18,920 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:48:18,929 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/README.md "HTTP/1.1 200 OK"
+2026-04-16 00:48:18,952 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:19,183 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/modules.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:48:19,228 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/modules.json "HTTP/1.1 200 OK"
+2026-04-16 00:48:19,302 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:19,484 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/sentence_bert_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:48:19,493 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/sentence_bert_config.json "HTTP/1.1 200 OK"
+2026-04-16 00:48:19,653 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:19,747 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/adapter_config.json "HTTP/1.1 404 Not Found"
+2026-04-16 00:48:19,996 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:48:20,004 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:20,013 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/config.json "HTTP/1.1 200 OK"
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 15662.43it/s]
+2026-04-16 00:48:20,304 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-04-16 00:48:20,354 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:20,551 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-04-16 00:48:20,705 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:20,801 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/video_preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-04-16 00:48:21,056 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:21,066 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-04-16 00:48:21,310 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:48:21,319 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-04-16 00:48:21,407 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:21,584 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:48:21,593 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/config.json "HTTP/1.1 200 OK"
+2026-04-16 00:48:21,757 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:21,908 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:48:21,918 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/config.json "HTTP/1.1 200 OK"
+2026-04-16 00:48:22,108 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:50162 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:48:22,245 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:48:22,256 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-04-16 00:48:22,459 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:22,540 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:48:22,549 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-04-16 00:48:22,806 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Quockhanh05/Vietnam_legal_embeddings/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-04-16 00:48:22,810 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:23,058 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Quockhanh05/Vietnam_legal_embeddings/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-04-16 00:48:23,160 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:23,308 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:48:23,317 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-04-16 00:48:23,511 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:23,574 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Quockhanh05/Vietnam_legal_embeddings/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-04-16 00:48:23,836 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Quockhanh05/Vietnam_legal_embeddings/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-04-16 00:48:23,862 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:24,152 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Quockhanh05/Vietnam_legal_embeddings/resolve/main/1_Pooling/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 00:48:24,162 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Quockhanh05/Vietnam_legal_embeddings/4ba1b7cad69e1d92c496072d248842c626dc43de/1_Pooling%2Fconfig.json "HTTP/1.1 200 OK"
+2026-04-16 00:48:24,212 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:24,447 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Quockhanh05/Vietnam_legal_embeddings "HTTP/1.1 200 OK"
+2026-04-16 00:48:24,451 [INFO] src.database: Using in-memory Qdrant (dev mode).
+2026-04-16 00:48:24,458 [INFO] src.retriever: HybridRetriever ready.
+2026-04-16 00:48:24,471 [INFO] src.main: ✅ Retriever reloaded after ingestion.
+2026-04-16 00:48:24,563 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:24,914 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:25,265 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:25,615 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:25,966 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:26,317 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:26,668 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:27,018 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:50472 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:48:27,369 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:27,720 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:28,070 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:28,421 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:28,772 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:29,123 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:29,474 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:29,824 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:30,175 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:30,526 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:30,877 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:31,228 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:31,579 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:31,929 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:50484 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:48:32,280 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:32,631 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:32,982 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:33,332 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:33,683 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:34,034 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:34,384 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:34,735 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:35,085 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:35,436 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:35,787 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:36,138 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:36,489 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:36,839 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:37,190 [INFO] watchfiles.main: 1 change detected
+INFO:     127.0.0.1:50812 - "GET /ingest/status HTTP/1.1" 200 OK
+2026-04-16 00:48:37,541 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:37,892 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:38,242 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:38,593 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:38,944 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:39,294 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:39,645 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:39,996 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:40,347 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:40,698 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:41,048 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:41,399 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:41,750 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:42,101 [INFO] watchfiles.main: 1 change detected
+2026-04-16 00:48:42,281 [INFO] src.retriever: Hybrid search: 'Quy định về bảo hiểm xã hội trong hợp đồng lao động?' (top_k=10)
+2026-04-16 00:48:42,313 [ERROR] src.main: Chat error: Collection vietnamese_legal not found
+Traceback (most recent call last):
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/src/main.py", line 235, in chat_sync
+    answer = generator.answer_question(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/src/generator.py", line 72, in answer_question
+    results = self._retriever.search(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/src/retriever.py", line 234, in search
+    dense_results = self.search_dense(query, top_k=top_k, validity_filter=validity_filter)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/src/retriever.py", line 106, in search_dense
+    return self._db.search_dense(vector, top_k=top_k, validity_filter=validity_filter)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/src/database.py", line 173, in search_dense
+    response = self.client.query_points(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/qdrant_client/qdrant_client.py", line 423, in query_points
+    return self._client.query_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/qdrant_client/local/qdrant_local.py", line 407, in query_points
+    collection = self._get_collection(collection_name)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cuong/Desktop/python/VinUni/legal_AI_assistant/venv/lib/python3.12/site-packages/qdrant_client/local/qdrant_local.py", line 183, in _get_collection
+    raise ValueError(f"Collection {collection_name} not found")
+ValueError: Collection vietnamese_legal not found
+INFO:     127.0.0.1:50826 - "POST /chat/sync HTTP/1.1" 500 Internal Server Error
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+2026-04-16 00:48:42,515 [INFO] src.main: 👋 Shutting down …
+INFO:     Application shutdown complete.
+INFO:     Finished server process [51212]
+INFO:     Stopping reloader process [50919]
+/usr/lib/python3.12/multiprocessing/resource_tracker.py:254: UserWarning: resource_tracker: There appear to be 2 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '
