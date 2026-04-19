@@ -228,7 +228,7 @@ class LegalRAGGenerator:
             summary=overall_report.summary,
             clauses=reviewed_clauses,
             overall_risks=overall_report.overall_risks,
-            citations=summary_evidence.citations,
+            citations=self._filter_citations(summary_text, summary_evidence.citations),
         )
 
     async def _review_single_clause(
@@ -270,7 +270,7 @@ class LegalRAGGenerator:
                     content=content,
                     analysis=data.get("analysis", ""),
                     risks=[ContractRiskItem(**r) for r in data.get("risks", [])],
-                    citations=evidence_pack.citations
+                    citations=self._filter_citations(response_text, evidence_pack.citations)
                 )
         except Exception as e:
             logger.error("Error reviewing clause %s: %s", title, e)
@@ -279,7 +279,7 @@ class LegalRAGGenerator:
             title=title, 
             content=content, 
             analysis="Không thể phân tích điều khoản này.",
-            citations=evidence_pack.citations
+            citations=[]
         )
 
     # ------------------------------------------------------------------
@@ -303,6 +303,31 @@ class LegalRAGGenerator:
         text = response.choices[0].message.content or ""
         logger.info("LLM response: %d characters.", len(text))
         return text
+
+    # ------------------------------------------------------------------
+    # Citation / Evidence filtering
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def _filter_citations(text: str, all_citations: list[Citation]) -> list[Citation]:
+        """
+        Extract cited indices (e.g., [1], [2]) from text and filter the citations list.
+        Returns only the citations that were actually mentioned.
+        """
+        # Extract indices [X]
+        cited_indices = set(re.findall(r"\[(\d+)\]", text))
+        
+        filtered = []
+        # Sort to keep order consistent with numbering
+        for idx_str in sorted(list(cited_indices), key=int):
+            try:
+                idx = int(idx_str) - 1
+                if 0 <= idx < len(all_citations):
+                    filtered.append(all_citations[idx])
+            except (ValueError, IndexError):
+                continue
+        
+        return filtered
 
     # ------------------------------------------------------------------
     # Output parsing
@@ -346,14 +371,15 @@ class LegalRAGGenerator:
         # If parsing failed, use the entire text as the answer
         if not answer_text.strip():
             answer_text = text
-
-        # Build citations from evidence pack (already structured)
-        citations = evidence_pack.citations
+        
+        # Extract cited indices (e.g., [1], [2]) from the AI's response sections
+        combined_text = f"{answer_text} {risk_text} {citations_text}"
+        filtered_citations = LegalRAGGenerator._filter_citations(combined_text, evidence_pack.citations)
 
         return LegalAnswer(
             answer=answer_text.strip(),
-            risk_analysis=risk_text.strip(),
-            citations=citations,
+            reasoning=risk_text.strip(),
+            citations=filtered_citations,
             evidence_pack=evidence_pack,
         )
 
@@ -398,7 +424,7 @@ class LegalRAGGenerator:
             )
 
         return ContractReviewResponse(
-            summary=summary or "Xem chi tiết phân tích bên dưới.",
+            summary=summary,
             overall_risks=risks,
-            citations=evidence_pack.citations,
+            citations=LegalRAGGenerator._filter_citations(text, evidence_pack.citations),
         )

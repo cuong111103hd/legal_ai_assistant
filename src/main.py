@@ -178,8 +178,9 @@ async def health_check():
 
 @app.post("/ingest", tags=["Ingestion"], response_model=IngestStatus)
 async def ingest_data(
-    request: IngestRequest,
     background_tasks: BackgroundTasks,
+    request: Optional[IngestRequest] = None,
+    limit: Optional[int] = Query(None, ge=1),
 ):
     """
     Start data ingestion as a background task.
@@ -189,8 +190,10 @@ async def ingest_data(
     if status.state == IngestState.RUNNING:
         raise HTTPException(status_code=409, detail="Ingestion đang chạy.")
 
+    actual_limit = limit if limit is not None else (request.limit if request else None)
+    
     async def _run():
-        await run_ingestion(limit=request.limit)
+        await run_ingestion(limit=actual_limit)
         # Reload retriever indices after ingestion
         global _retriever, _generator
         try:
@@ -433,6 +436,7 @@ async def get_document(doc_id: str):
         id=doc.id,
         title=doc.title,
         clean_text=doc.clean_text or "",
+        content_html=doc.content_html or "",
         doc_type=doc.doc_type,
         document_number=doc.document_number,
         validity_status=doc.validity_status,

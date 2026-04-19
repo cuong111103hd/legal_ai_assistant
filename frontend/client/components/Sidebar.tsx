@@ -210,14 +210,6 @@ export function Sidebar({ isOpen = true, activeSessionId, onSessionSelect }: Sid
           <HelpCircle size={20} className="text-slate-400 group-hover:text-amber-500" />
           <span className="text-sm font-semibold text-slate-600">Hỗ trợ & Hướng dẫn</span>
         </button>
-        <div className="p-4 bg-slate-900 rounded-[1.5rem] relative overflow-hidden group cursor-pointer hover:shadow-lg transition-all duration-500">
-          <div className="absolute top-0 right-0 p-2 opacity-20 transition-transform group-hover:rotate-12">
-            <ShieldAlert size={40} className="text-blue-400" />
-          </div>
-          <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1 relative z-10">Gói Premium</p>
-          <p className="text-xs text-white font-bold relative z-10">Mở khóa trí tuệ đầy đủ</p>
-          <p className="text-[10px] text-slate-400 mt-2 hover:text-white transition-colors">Nâng cấp ngay →</p>
-        </div>
       </div>
     </div>
   );

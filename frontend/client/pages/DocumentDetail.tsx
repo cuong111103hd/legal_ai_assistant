@@ -20,6 +20,7 @@ interface LegalDoc {
   id: string;
   title: string;
   clean_text: string;
+  content_html?: string;
   doc_type: string;
   document_number: string;
   validity_status: string;
@@ -175,9 +176,16 @@ export default function DocumentDetail() {
                   <div className="p-8 md:p-12 lg:p-16">
                      <article className="prose prose-indigo max-w-none">
                         <div className="bg-slate-50/50 p-8 md:p-12 rounded-[2rem] border border-slate-100 shadow-inner">
-                           <pre className="whitespace-pre-wrap font-sans text-base text-slate-800 leading-[1.8] tracking-normal">
-                              {doc.clean_text || "Nội dung đang được cập nhật..."}
-                           </pre>
+                           {doc.content_html ? (
+                             <div 
+                               className="whitespace-pre-wrap font-sans text-base text-slate-800 leading-[1.8] tracking-normal doc-html-content"
+                               dangerouslySetInnerHTML={{ __html: doc.content_html }}
+                             />
+                           ) : (
+                             <pre className="whitespace-pre-wrap font-sans text-base text-slate-800 leading-[1.8] tracking-normal">
+                                {doc.clean_text || "Nội dung đang được cập nhật..."}
+                             </pre>
+                           )}
                         </div>
                      </article>
                      

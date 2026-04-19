@@ -42,6 +42,7 @@ class LegalChunk(BaseModel):
     content: str = Field(..., description="Chunk text content")
     validity_status: str = Field(default="Còn hiệu lực", description="Document validity")
     doc_type: str = Field(default="", description="Luật / Nghị định / Thông tư / …")
+    document_number: str = Field(default="", description="Số hiệu văn bản, e.g. '45/2019/QH14'")
     chunk_index: int = Field(default=0, description="Positional index within the parent document")
 
 
@@ -227,6 +228,7 @@ class LegalDocumentResponse(BaseModel):
     id: str
     title: str
     clean_text: str
+    content_html: str = ""
     doc_type: str = ""
     document_number: str = ""
     validity_status: str = ""

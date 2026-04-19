@@ -13,6 +13,7 @@ from typing import Optional
 from uuid import uuid4
 
 from datasets import load_dataset
+from bs4 import BeautifulSoup
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from sentence_transformers import SentenceTransformer
 from tqdm import tqdm
@@ -46,28 +47,77 @@ def get_ingest_status() -> IngestStatus:
 # Vietnamese-aware text splitter
 # ---------------------------------------------------------------------------
 
-def _create_legal_splitter() -> RecursiveCharacterTextSplitter:
+def chunk_html_by_article(
+    html_content: str, 
+    document_id: str, 
+    law_name: str, 
+    validity_status: str = "Còn hiệu lực", 
+    doc_type: str = "",
+    document_number: str = "",
+) -> list[LegalChunk]:
     """
-    Build a RecursiveCharacterTextSplitter optimised for Vietnamese legal
-    document structure.  Splits by Điều → Khoản → Điểm → paragraph → sentence.
+    Chunks a legal document by Article (Điều).
+    - Metadata (article_id) = Article title (e.g. 'Điều 1. Phạm vi điều chỉnh')
+    - Content = All text blocks following the article title until the next 'Điều'.
     """
-    return RecursiveCharacterTextSplitter(
-        chunk_size=settings.CHUNK_SIZE,
-        chunk_overlap=settings.CHUNK_OVERLAP,
-        separators=[
-            "\nĐiều ",       # Article boundary (highest priority)
-            "\nKhoản ",      # Clause boundary
-            "\nĐiểm ",      # Sub-clause boundary
-            "\nMục ",        # Section
-            "\nChương ",     # Chapter
-            "\n\n",          # Double newline (paragraph)
-            "\n",            # Single newline
-            ". ",            # Sentence end
-            " ",             # Word
-        ],
-        keep_separator=True,
-        strip_whitespace=True,
-    )
+    soup = BeautifulSoup(html_content, "html.parser")
+    
+    # Try to target the main content container to avoid metadata tables/footers if possible
+    container = soup.find("div", {"align": "justify"}) or soup.find("td", {"colspan": "3"}) or soup
+    
+    chunks: list[LegalChunk] = []
+    current_article_id = None # Start as None to skip intro text
+    current_content = []
+    
+    # Pattern: 'Điều 1.', 'Điều 2a.', etc. at the start of a block
+    article_pattern = re.compile(r"^\s*Điều\s+(\d+[a-z]?)\s*\.", re.IGNORECASE)
+
+    # Standard block elements in these HTML files
+    for tag in container.find_all(['p', 'h3', 'h2', 'h1', 'div']):
+        # If tag has children tags (like <strong>), we want the full text
+        text = tag.get_text().strip()
+        if not text:
+            continue
+            
+        # Check if this tag starts a new Article
+        match = article_pattern.match(text)
+        if match:
+            # We found a new article boundary. Save the previous one if it exists.
+            if current_article_id is not None and current_content:
+                chunks.append(LegalChunk(
+                    chunk_id=str(uuid4()),
+                    document_id=document_id,
+                    law_name=law_name,
+                    article_id=current_article_id,
+                    content="\n".join(current_content),
+                    validity_status=validity_status,
+                    doc_type=doc_type,
+                    document_number=document_number,
+                    chunk_index=len(chunks),
+                ))
+            
+            # Start new capture
+            current_article_id = text
+            current_content = [] # Reset content. 
+        elif current_article_id is not None:
+            # Normal text block, only append if we have already found the first Article
+            current_content.append(text)
+
+    # Final leftover chunk
+    if current_article_id is not None and current_content:
+        chunks.append(LegalChunk(
+            chunk_id=str(uuid4()),
+            document_id=document_id,
+            law_name=law_name,
+            article_id=current_article_id,
+            content="\n".join(current_content),
+            validity_status=validity_status,
+            doc_type=doc_type,
+            document_number=document_number,
+            chunk_index=len(chunks),
+        ))
+        
+    return chunks
 
 
 # ---------------------------------------------------------------------------
@@ -97,6 +147,26 @@ def _load_dataset(limit: Optional[int] = None):
         # Merge on 'id'
         df = pd.merge(content_df, meta_df, on="id", how="left")
         
+        # --- Apply User Requested Filters ---
+        logger.info("Applying filters: 'Luật' & 'Bộ luật', Still Valid, Year >= 2015")
+        
+        # 1. Filter by Type
+        target_types = ['Luật', 'Bộ luật']
+        if 'loai_van_ban' in df.columns:
+            df = df[df['loai_van_ban'].isin(target_types)]
+        
+        # 2. Filter by Validity
+        if 'tinh_trang_hieu_luc' in df.columns:
+            df = df[df['tinh_trang_hieu_luc'] == 'Còn hiệu lực']
+            
+        # 3. Filter by Year
+        if 'ngay_ban_hanh' in df.columns:
+            # Parse dates (D/M/Y format as per user SQL)
+            df['dt_ban_hanh'] = pd.to_datetime(df['ngay_ban_hanh'], format='%d/%m/%Y', errors='coerce')
+            df = df[df['dt_ban_hanh'].dt.year >= 2015]
+        
+        logger.info(f"Filtered to {len(df)} documents matching criteria.")
+
         if limit:
             df = df.head(limit)
             
@@ -172,32 +242,19 @@ def _chunk_documents(documents: list[dict]) -> list[LegalChunk]:
     """
     Split each document into LegalChunks with metadata.
     """
-    splitter = _create_legal_splitter()
     all_chunks: list[LegalChunk] = []
 
     for doc in tqdm(documents, desc="Chunking documents"):
-        text = clean_html(doc["content_html"])
-        if not text or len(text.strip()) < 20:
-            _ingest_status.processed_documents += 1
-            continue
-
-        splits = splitter.split_text(text)
-        law_name = normalize_vietnamese(doc.get("title", ""))
-        doc_number = doc.get("document_number", "") or extract_document_number(law_name)
-
-        for idx, chunk_text in enumerate(splits):
-            article_id = extract_article_id(chunk_text)
-            chunk = LegalChunk(
-                chunk_id=str(uuid4()),
-                document_id=doc["id"],
-                law_name=law_name,
-                article_id=article_id,
-                content=chunk_text,
-                validity_status=doc.get("validity_status", "Còn hiệu lực"),
-                doc_type=doc.get("doc_type", ""),
-                chunk_index=idx,
-            )
-            all_chunks.append(chunk)
+        # --- NEW Structure-aware Chunking ---
+        doc_chunks = chunk_html_by_article(
+            html_content=doc["content_html"],
+            document_id=doc["id"],
+            law_name=normalize_vietnamese(doc.get("title", "")),
+            validity_status=doc.get("validity_status", "Còn hiệu lực"),
+            doc_type=doc.get("doc_type", ""),
+            document_number=doc.get("document_number", ""),
+        )
+        all_chunks.extend(doc_chunks)
         
         # Update progress for API
         _ingest_status.processed_documents += 1
@@ -357,3 +414,28 @@ def _save_chunk_metadata(chunks: list[LegalChunk]) -> None:
         pickle.dump(lookup, f)
 
     logger.info("Saved chunk metadata to %s (%d entries).", path, len(lookup))
+
+if __name__ == "__main__":
+    # Test article-based chunking with local sample files
+    test_files = [
+        "vanbanphapluat_reference/luat1.html",
+        "vanbanphapluat_reference/table class detailcontent.html"
+    ]
+    
+    for file_path in test_files:
+        if os.path.exists(file_path):
+            print(f"\n\x1b[34m{'='*20} TESTING: {file_path} {'='*20}\x1b[0m")
+            with open(file_path, 'r', encoding='utf-8') as f:
+                html = f.read()
+            
+            chunks = chunk_html_by_article(html, "test-doc-id", "Luật Sửa đổi TTHS")
+            for i, c in enumerate(chunks):
+                print(f"\n\x1b[33m[Chunk {i}]\x1b[0m")
+                print(f" \x1b[1mMETADATA:\x1b[0m {c.article_id}")
+                content_preview = c.content.replace('\n', ' ')[:300]
+                print(f" \x1b[1mCONTENT:\x1b[0m {content_preview}...")
+                if i >= 10: # Only show first 10 for quick review
+                    print(f"\n... and {len(chunks)-11} more chunks")
+                    break
+        else:
+            print(f"File not found: {file_path}")

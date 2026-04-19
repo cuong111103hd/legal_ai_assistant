@@ -7,6 +7,7 @@ interface LegalDocument {
   id: string;
   title: string;
   clean_text: string;
+  content_html?: string;
   doc_type: string;
   document_number: string;
   validity_status: string;
@@ -142,10 +143,17 @@ export function DocumentViewer({ documentId, onClose }: DocumentViewerProps) {
               <div className="h-px bg-slate-100" />
 
               {/* Full Text */}
-              <div className="prose prose-sm prose-slate max-w-none">
-                <pre className="whitespace-pre-wrap font-sans text-sm text-slate-700 leading-relaxed bg-slate-50/50 p-4 rounded-xl border border-slate-100">
-                  {doc.clean_text || "Không có nội dung."}
-                </pre>
+              <div className="prose prose-slate max-w-none w-full">
+                {doc.content_html ? (
+                  <div 
+                    className="whitespace-pre-wrap font-sans text-base text-slate-800 leading-[1.8] tracking-normal bg-slate-50/50 p-4 rounded-xl border border-slate-100"
+                    dangerouslySetInnerHTML={{ __html: doc.content_html }}
+                  />
+                ) : (
+                  <pre className="whitespace-pre-wrap font-sans text-sm text-slate-700 leading-relaxed bg-slate-50/50 p-4 rounded-xl border border-slate-100">
+                    {doc.clean_text || "Không có nội dung."}
+                  </pre>
+                )}
               </div>
             </div>
           )}

@@ -296,3 +296,12 @@ class HybridRetriever:
             )
 
         return EvidencePack(citations=citations)
+
+
+
+# if __name__ == "__main__":
+#     retriever = HybridRetriever()
+#     results = retriever.search("Hợp đồng lao dộng không có bảo hiểm có vi phạm pháp luật không")
+#     for result in results:
+#         print(result.chunk.content)
+#         print("-" * 80)

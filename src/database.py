@@ -131,6 +131,7 @@ class QdrantManager:
                         "content": chunk.content,
                         "validity_status": chunk.validity_status,
                         "doc_type": chunk.doc_type,
+                        "document_number": chunk.document_number,
                         "chunk_index": chunk.chunk_index,
                     },
                 )
