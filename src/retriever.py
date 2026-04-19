@@ -9,6 +9,7 @@ import logging
 import os
 import pickle
 from typing import Optional
+from langsmith import traceable
 
 from sentence_transformers import SentenceTransformer
 
@@ -95,6 +96,7 @@ class HybridRetriever:
     # Dense search
     # ------------------------------------------------------------------
 
+    @traceable(name="Dense Search (Qdrant)")
     def search_dense(
         self,
         query: str,
@@ -109,6 +111,7 @@ class HybridRetriever:
     # Sparse (BM25) search
     # ------------------------------------------------------------------
 
+    @traceable(name="Sparse Search (BM25)")
     def search_sparse(self, query: str, top_k: int = 10) -> list[SearchResult]:
         """Run BM25 sparse search."""
         if not self._bm25 or not self._bm25.is_built:
@@ -203,6 +206,7 @@ class HybridRetriever:
     # Main hybrid search
     # ------------------------------------------------------------------
 
+    @traceable(name="Hybrid Retrieval Pipeline")
     def search(
         self,
         query: str,

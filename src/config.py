@@ -4,8 +4,12 @@ All settings are loaded from environment variables / .env file.
 """
 
 import os
+from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
 from pydantic import Field
+
+# Load environment variables from .env into os.environ for LangChain tracing
+load_dotenv()
 
 
 class Settings(BaseSettings):
@@ -100,6 +104,12 @@ class Settings(BaseSettings):
     # --- Legacy (kept for compatibility) ---
     ANTHROPIC_API_KEY: str = Field(default="", description="Anthropic API key")
     OPENAI_API_KEY: str = Field(default="", description="OpenAI API key")
+
+    # --- LangChain / LangSmith ---
+    LANGCHAIN_TRACING_V2: bool = Field(default=False)
+    LANGCHAIN_API_KEY: str = Field(default="")
+    LANGCHAIN_PROJECT: str = Field(default="legal-ai-assistant")
+    LANGCHAIN_ENDPOINT: str = Field(default="https://api.smith.langchain.com")
 
     model_config = {
         "env_file": ".env",

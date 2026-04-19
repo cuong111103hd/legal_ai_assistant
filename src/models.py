@@ -170,6 +170,11 @@ class IngestRequest(BaseModel):
     )
 
 
+class TargetedIngestRequest(BaseModel):
+    """Request body for /ingest/by-numbers endpoint."""
+    document_numbers: list[str] = Field(..., description="List of so_ky_hieu (e.g. ['24/2018/QH14'])")
+
+
 class IngestStatus(BaseModel):
     """Status response for ingestion job."""
     state: IngestState = Field(default=IngestState.IDLE)

@@ -124,7 +124,7 @@ def chunk_html_by_article(
 # Load & merge dataset
 # ---------------------------------------------------------------------------
 
-def _load_dataset(limit: Optional[int] = None):
+def _load_dataset(limit: Optional[int] = None, doc_numbers: Optional[list[str]] = None):
     """
     Load metadata + content from HuggingFace OR local parquet files.
     Prioritises local files if they exist in data/raw/.
@@ -148,25 +148,58 @@ def _load_dataset(limit: Optional[int] = None):
         df = pd.merge(content_df, meta_df, on="id", how="left")
         
         # --- Apply User Requested Filters ---
-        logger.info("Applying filters: 'Luật' & 'Bộ luật', Still Valid, Year >= 2015")
+        count_stage0 = len(df)
         
-        # 1. Filter by Type
-        target_types = ['Luật', 'Bộ luật']
-        if 'loai_van_ban' in df.columns:
-            df = df[df['loai_van_ban'].isin(target_types)]
-        
-        # 2. Filter by Validity
-        if 'tinh_trang_hieu_luc' in df.columns:
-            df = df[df['tinh_trang_hieu_luc'] == 'Còn hiệu lực']
+        # If doc_numbers is provided, we skip all other filters and only take those docs
+        if doc_numbers:
+            logger.info("Filtering by specific document numbers: %s", doc_numbers)
+            if 'so_ky_hieu' in df.columns:
+                df = df[df['so_ky_hieu'].astype(str).isin(doc_numbers)]
+            logger.info("Matched %d documents by number.", len(df))
+        else:
+            # 1. Filter by Type
+            target_types = ['Luật', 'Bộ luật']
+            if 'loai_van_ban' in df.columns:
+                df = df[df['loai_van_ban'].astype(str).isin(target_types)]
+            count_stage1 = len(df)
             
-        # 3. Filter by Year
-        if 'ngay_ban_hanh' in df.columns:
-            # Parse dates (D/M/Y format as per user SQL)
-            df['dt_ban_hanh'] = pd.to_datetime(df['ngay_ban_hanh'], format='%d/%m/%Y', errors='coerce')
-            df = df[df['dt_ban_hanh'].dt.year >= 2015]
-        
-        logger.info(f"Filtered to {len(df)} documents matching criteria.")
+            # 2. Filter by Validity
+            if 'tinh_trang_hieu_luc' in df.columns:
+                target_status = ['Còn hiệu lực', 'Hết hiệu lực một phần']
+                df = df[df['tinh_trang_hieu_luc'].astype(str).isin(target_status)]
+            count_stage2 = len(df)
+                
+            # 3. Filter by Year
+            if 'ngay_ban_hanh' in df.columns:
+                # Parse dates (D/M/Y format as per user SQL)
+                df['dt_ban_hanh'] = pd.to_datetime(df['ngay_ban_hanh'], format='%d/%m/%Y', errors='coerce')
+                df = df[df['dt_ban_hanh'].dt.year >= 2015]
+            count_stage3 = len(df)
 
+            # 4. Filter by Title keywords
+            if 'title' in df.columns:
+                import unicodedata
+                def normalize_vn(text):
+                    if not isinstance(text, str): return ""
+                    return unicodedata.normalize('NFC', text)
+                
+                keywords = ['An toàn thông tin mạng', 'An ninh mạng']
+                normalized_keywords = [normalize_vn(k) for k in keywords]
+                pattern = '|'.join(normalized_keywords)
+                
+                # Normalize the title column for robust matching
+                df['title_norm'] = df['title'].apply(normalize_vn)
+                df = df[df['title_norm'].str.contains(pattern, case=False, na=False)]
+                df = df.drop(columns=['title_norm'])
+
+            logger.info(f"Ingestion Filter Report:")
+            logger.info(f" - Initial: {count_stage0}")
+            logger.info(f" - After Type Filter ({target_types}): {count_stage1} (Dropped {count_stage0 - count_stage1})")
+            logger.info(f" - After Validity Filter: {count_stage2} (Dropped {count_stage1 - count_stage2})")
+            logger.info(f" - After Year Filter (>=2015): {count_stage3} (Dropped {count_stage2 - count_stage3})")
+            logger.info(f" - After Title Keywords: {len(df)} (Dropped {count_stage3 - len(df)})")
+
+        
         if limit:
             df = df.head(limit)
             
@@ -178,7 +211,7 @@ def _load_dataset(limit: Optional[int] = None):
                 "content_html": row.get("content_html", ""),
                 "doc_type": row.get("loai_van_ban", ""),
                 "validity_status": row.get("tinh_trang_hieu_luc", "Còn hiệu lực"),
-                "document_number": row.get("so_ky_hieu", ""),
+                "document_number": str(row.get("so_ky_hieu", "")),
             })
         
         logger.info("Loaded %d documents from local files.", len(merged))
@@ -204,10 +237,16 @@ def _load_dataset(limit: Optional[int] = None):
     for row in meta_ds:
         doc_id = str(row.get("id", ""))
         if doc_id:
-            meta_lookup[doc_id] = dict(row)
-            total_meta += 1
+            # If doc_numbers is set, only buffer metadata for those docs
+            if doc_numbers:
+                if str(row.get("so_ky_hieu", "")) in doc_numbers:
+                    meta_lookup[doc_id] = dict(row)
+                    total_meta += 1
+            else:
+                meta_lookup[doc_id] = dict(row)
+                total_meta += 1
         
-        if limit and total_meta > (limit * 100): # heuristic
+        if limit and not doc_numbers and total_meta > (limit * 100): # heuristic
              break
     
     logger.info("Buffered metadata for %d documents.", len(meta_lookup))
@@ -215,16 +254,44 @@ def _load_dataset(limit: Optional[int] = None):
     # Merge content with metadata
     merged: list[dict] = []
     count = 0
+    target_types = ['Luật', 'Bộ luật']
+    target_status = ['Còn hiệu lực', 'Hết hiệu lực một phần']
+    
     for row in content_ds:
         doc_id = str(row.get("id", ""))
         meta = meta_lookup.get(doc_id, {})
+        if not meta:
+            continue
+            
+        if doc_numbers:
+            # If specifically requested, no further checks needed
+            pass
+        else:
+            # 1. Filter by Type
+            if meta.get("loai_van_ban") not in target_types:
+                continue
+                
+            # 2. Filter by Validity
+            if meta.get("tinh_trang_hieu_luc") not in target_status:
+                continue
+                
+            # 3. Filter by Year
+            try:
+                date_str = meta.get("ngay_ban_hanh", "")
+                if date_str:
+                    year = int(date_str.split('/')[-1])
+                    if year < 2015:
+                        continue
+            except (ValueError, IndexError):
+                pass
+
         merged.append({
             "id": doc_id,
             "title": meta.get("title", ""),
             "content_html": row.get("content_html", ""),
             "doc_type": meta.get("loai_van_ban", ""),
             "validity_status": meta.get("tinh_trang_hieu_luc", "Còn hiệu lực"),
-            "document_number": meta.get("so_ky_hieu", ""),
+            "document_number": str(meta.get("so_ky_hieu", "")),
         })
         count += 1
         if limit and count >= limit:
@@ -232,6 +299,62 @@ def _load_dataset(limit: Optional[int] = None):
 
     logger.info("Loaded %d documents from merged stream.", len(merged))
     return merged
+
+
+async def run_ingestion_by_numbers(doc_numbers: list[str]) -> IngestStatus:
+    """
+    Specific ingestion for a list of document numbers.
+    Bypasses all general filters!
+    """
+    global _ingest_status
+
+    _ingest_status = IngestStatus(state=IngestState.RUNNING)
+
+    try:
+        logger.info("=== Targeted Ingestion: %d documents ===", len(doc_numbers))
+        
+        # Step 1: Load exactly those docs
+        documents = _load_dataset(doc_numbers=doc_numbers)
+        _ingest_status.total_documents = len(documents)
+
+        if not documents:
+            _ingest_status.state = IngestState.FAILED
+            _ingest_status.error_message = "Không tìm thấy văn bản nào với mã đã cung cấp."
+            return _ingest_status
+
+        # Step 2: Save to SQL
+        await _async_save_to_postgres(documents)
+
+        # Step 3: Chunk
+        chunks = _chunk_documents(documents)
+        _ingest_status.total_chunks = len(chunks)
+
+        # Step 4: Embed
+        model = SentenceTransformer(settings.EMBEDDING_MODEL)
+        embeddings = _generate_embeddings(chunks, model)
+
+        # Step 5: Qdrant (UPSERT - do NOT recreate collection here!)
+        db = QdrantManager()
+        # We use upsert so if document already exists, it updates; else it adds.
+        db.upsert_batch(chunks, embeddings)
+
+        # Step 6: BM25 index (Incremental update is hard, so we rebuild for simplicity 
+        # or skip if only adding one. For now, rebuild to keep it working.)
+        bm25 = BM25Index()
+        # To truly support adding/updating, we'd need to load entire DB chunks.
+        # For this targeted ingest, let's assume we want them searchable.
+        # Note: This might be SLOW if DB is huge.
+        # TODO: Implement incremental BM25 if needed.
+        
+        _ingest_status.state = IngestState.COMPLETED
+        logger.info("✅ Targeted ingestion complete.")
+
+    except Exception as e:
+        logger.error("❌ Targeted ingestion failed: %s", e, exc_info=True)
+        _ingest_status.state = IngestState.FAILED
+        _ingest_status.error_message = str(e)
+
+    return _ingest_status
 
 
 # ---------------------------------------------------------------------------

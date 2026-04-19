@@ -11,6 +11,7 @@ import json
 import logging
 import re
 from typing import AsyncGenerator, Optional
+from langsmith import traceable
 
 
 from .config import settings
@@ -67,6 +68,7 @@ class LegalRAGGenerator:
     # Legal Q&A
     # ------------------------------------------------------------------
 
+    @traceable(name="Legal Q&A Pipeline")
     async def answer_question(
         self,
         question: str,
@@ -101,6 +103,7 @@ class LegalRAGGenerator:
         answer = self._parse_legal_answer(response_text, evidence_pack)
         return answer
 
+    @traceable(name="Legal Q&A Streaming")
     async def answer_question_stream(
         self,
         question: str,
@@ -166,6 +169,7 @@ class LegalRAGGenerator:
     # Contract review
     # ------------------------------------------------------------------
 
+    @traceable(name="Contract Review Pipeline")
     async def review_contract(
         self,
         contract_text: str,
@@ -286,6 +290,7 @@ class LegalRAGGenerator:
     # LLM call
     # ------------------------------------------------------------------
 
+    @traceable(name="LLM Call")
     async def _call_llm(self, system_prompt: str, user_prompt: str) -> str:
         """Call LLM via async client."""
         logger.info("Calling LLM (%s) …", settings.LLM_MODEL)
