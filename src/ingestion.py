@@ -124,10 +124,15 @@ def chunk_html_by_article(
 # Load & merge dataset
 # ---------------------------------------------------------------------------
 
-def _load_dataset(limit: Optional[int] = None, doc_numbers: Optional[list[str]] = None):
+def _load_dataset(limit: Optional[int] = None, doc_numbers: Optional[list[str]] = None, force_all: bool = False):
     """
     Load metadata + content from HuggingFace OR local parquet files.
     Prioritises local files if they exist in data/raw/.
+    
+    Args:
+        limit: Max docs to load.
+        doc_numbers: Specific so_ky_hieu to filter for.
+        force_all: If True, bypasses ALL filters (year, type, etc.) and takes top docs.
     """
     LOCAL_META = "data/raw/data/metadata.parquet"
     LOCAL_CONTENT = "data/raw/data/content.parquet"
@@ -147,16 +152,18 @@ def _load_dataset(limit: Optional[int] = None, doc_numbers: Optional[list[str]] 
         # Merge on 'id'
         df = pd.merge(content_df, meta_df, on="id", how="left")
         
-        # --- Apply User Requested Filters ---
-        count_stage0 = len(df)
-        
-        # If doc_numbers is provided, we skip all other filters and only take those docs
-        if doc_numbers:
+        # --- Apply Filters ---
+        if force_all:
+            logger.info("Test Mode: Bypassing all filters. Taking top %d documents.", limit or 50)
+            if limit:
+                df = df.head(limit)
+        elif doc_numbers:
             logger.info("Filtering by specific document numbers: %s", doc_numbers)
             if 'so_ky_hieu' in df.columns:
                 df = df[df['so_ky_hieu'].astype(str).isin(doc_numbers)]
             logger.info("Matched %d documents by number.", len(df))
         else:
+            count_stage0 = len(df)
             # 1. Filter by Type
             target_types = ['Luật', 'Bộ luật']
             if 'loai_van_ban' in df.columns:
@@ -176,21 +183,21 @@ def _load_dataset(limit: Optional[int] = None, doc_numbers: Optional[list[str]] 
                 df = df[df['dt_ban_hanh'].dt.year >= 2015]
             count_stage3 = len(df)
 
-            # 4. Filter by Title keywords
-            if 'title' in df.columns:
-                import unicodedata
-                def normalize_vn(text):
-                    if not isinstance(text, str): return ""
-                    return unicodedata.normalize('NFC', text)
+            # # 4. Filter by Title keywords
+            # if 'title' in df.columns:
+            #     import unicodedata
+            #     def normalize_vn(text):
+            #         if not isinstance(text, str): return ""
+            #         return unicodedata.normalize('NFC', text)
                 
-                keywords = ['An toàn thông tin mạng', 'An ninh mạng']
-                normalized_keywords = [normalize_vn(k) for k in keywords]
-                pattern = '|'.join(normalized_keywords)
+            #     keywords = ['An toàn thông tin mạng', 'An ninh mạng']
+            #     normalized_keywords = [normalize_vn(k) for k in keywords]
+            #     pattern = '|'.join(normalized_keywords)
                 
-                # Normalize the title column for robust matching
-                df['title_norm'] = df['title'].apply(normalize_vn)
-                df = df[df['title_norm'].str.contains(pattern, case=False, na=False)]
-                df = df.drop(columns=['title_norm'])
+            #     # Normalize the title column for robust matching
+            #     df['title_norm'] = df['title'].apply(normalize_vn)
+            #     df = df[df['title_norm'].str.contains(pattern, case=False, na=False)]
+            #     df = df.drop(columns=['title_norm'])
 
             logger.info(f"Ingestion Filter Report:")
             logger.info(f" - Initial: {count_stage0}")
@@ -237,8 +244,10 @@ def _load_dataset(limit: Optional[int] = None, doc_numbers: Optional[list[str]] 
     for row in meta_ds:
         doc_id = str(row.get("id", ""))
         if doc_id:
-            # If doc_numbers is set, only buffer metadata for those docs
-            if doc_numbers:
+            if force_all:
+                meta_lookup[doc_id] = dict(row)
+                total_meta += 1
+            elif doc_numbers:
                 if str(row.get("so_ky_hieu", "")) in doc_numbers:
                     meta_lookup[doc_id] = dict(row)
                     total_meta += 1
@@ -246,7 +255,9 @@ def _load_dataset(limit: Optional[int] = None, doc_numbers: Optional[list[str]] 
                 meta_lookup[doc_id] = dict(row)
                 total_meta += 1
         
-        if limit and not doc_numbers and total_meta > (limit * 100): # heuristic
+        if limit and not force_all and not doc_numbers and total_meta > (limit * 100): # heuristic
+             break
+        if limit and force_all and total_meta >= limit:
              break
     
     logger.info("Buffered metadata for %d documents.", len(meta_lookup))
@@ -263,8 +274,8 @@ def _load_dataset(limit: Optional[int] = None, doc_numbers: Optional[list[str]] 
         if not meta:
             continue
             
-        if doc_numbers:
-            # If specifically requested, no further checks needed
+        if force_all or doc_numbers:
+            # If for testing or specifically requested, no further checks needed
             pass
         else:
             # 1. Filter by Type
@@ -299,6 +310,44 @@ def _load_dataset(limit: Optional[int] = None, doc_numbers: Optional[list[str]] 
 
     logger.info("Loaded %d documents from merged stream.", len(merged))
     return merged
+
+
+async def run_test_ingestion(limit: int = 50) -> IngestStatus:
+    """
+    Test ingestion bypassing ALL filters.
+    Simply takes the first N documents and loads them.
+    """
+    global _ingest_status
+    _ingest_status = IngestStatus(state=IngestState.RUNNING)
+
+    try:
+        logger.info("=== DEBUG: Starting Test Ingestion (First %d unfiltered docs) ===", limit)
+        documents = _load_dataset(limit=limit, force_all=True)
+        _ingest_status.total_documents = len(documents)
+
+        # Step 2: Save to SQL
+        await _async_save_to_postgres(documents)
+
+        # Step 3: Chunk
+        chunks = _chunk_documents(documents)
+        _ingest_status.total_chunks = len(chunks)
+        
+        # Step 4: Embed
+        model = SentenceTransformer(settings.EMBEDDING_MODEL)
+        embeddings = _generate_embeddings(chunks, model)
+
+        # Step 5: Qdrant (UPSERT - updates if exists)
+        db = QdrantManager()
+        db.upsert_batch(chunks, embeddings)
+
+        _ingest_status.state = IngestState.COMPLETED
+        logger.info("✅ Test ingestion complete.")
+    except Exception as e:
+        logger.error("❌ Test ingestion failed: %s", e, exc_info=True)
+        _ingest_status.state = IngestState.FAILED
+        _ingest_status.error_message = str(e)
+
+    return _ingest_status
 
 
 async def run_ingestion_by_numbers(doc_numbers: list[str]) -> IngestStatus:

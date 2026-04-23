@@ -40,7 +40,7 @@ from .database_sql import (
     update_chat_session_title,
 )
 from .generator import LegalRAGGenerator
-from .ingestion import get_ingest_status, run_ingestion, run_ingestion_by_numbers
+from .ingestion import get_ingest_status, run_ingestion, run_ingestion_by_numbers, run_test_ingestion
 from .models import (
     ChatMessageResponse,
     ChatRequest,
@@ -231,6 +231,30 @@ async def ingest_targeted(request: TargetedIngestRequest, background_tasks: Back
             _retriever = HybridRetriever()
             _generator = LegalRAGGenerator(retriever=_retriever)
             logger.info("✅ Retriever reloaded after targeted ingestion.")
+        except Exception as e:
+            logger.error("Failed to reload retriever: %s", e)
+
+    background_tasks.add_task(_run)
+    return IngestStatus(state=IngestState.RUNNING)
+
+
+@app.post("/ingest/test", tags=["Ingestion"], response_model=IngestStatus)
+async def ingest_test(background_tasks: BackgroundTasks):
+    """
+    DEBUG ONLY: Ingest first 50 docs WITHOUT any filtering.
+    """
+    status = get_ingest_status()
+    if status.state == IngestState.RUNNING:
+        raise HTTPException(status_code=409, detail="Bộ máy nạp dữ liệu đang bận.")
+
+    async def _run():
+        await run_test_ingestion(limit=50)
+        # Reload indices
+        global _retriever, _generator
+        try:
+            _retriever = HybridRetriever()
+            _generator = LegalRAGGenerator(retriever=_retriever)
+            logger.info("✅ Retriever reloaded after test ingestion.")
         except Exception as e:
             logger.error("Failed to reload retriever: %s", e)
 
