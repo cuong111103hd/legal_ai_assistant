@@ -19,6 +19,7 @@ from .models import (
     Citation,
     EvidencePack,
     LegalChunk,
+    QueryPlan,
     SearchResult,
     SearchSource,
 )
@@ -210,6 +211,7 @@ class HybridRetriever:
     def search(
         self,
         query: str,
+        query_plan: Optional[QueryPlan] = None,
         top_k: int | None = None,
         validity_filter: Optional[str] = None,
         inject_context: bool = True,
@@ -223,6 +225,7 @@ class HybridRetriever:
 
         Args:
             query: User's legal question.
+            query_plan: Optional QueryPlan from the planner (for expansion).
             top_k: Number of results (defaults to settings.TOP_K).
             validity_filter: Optional filter on validity_status.
             inject_context: Whether to fetch adjacent chunks.
@@ -239,7 +242,14 @@ class HybridRetriever:
         logger.info("Dense search returned %d results.", len(dense_results))
 
         # 2. Sparse search
-        sparse_results = self.search_sparse(query, top_k=top_k)
+        bm25_query = query
+        if query_plan and query_plan.expansion_variants:
+            # Combine original and variants for BM25 to increase recall
+            variants = query_plan.expansion_variants[:2]
+            bm25_query = " ".join(set([query] + variants))
+            logger.info("BM25 using expanded query: %s", bm25_query)
+
+        sparse_results = self.search_sparse(bm25_query, top_k=top_k)
         logger.info("Sparse search returned %d results.", len(sparse_results))
 
         # 3. RRF fusion

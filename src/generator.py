@@ -36,6 +36,7 @@ from .utils.text_processing import (
     extract_article_id,
     extract_clause_id,
 )
+from .planner import LegalQueryPlanner
 
 logger = logging.getLogger(__name__)
 
@@ -48,6 +49,7 @@ class LegalRAGGenerator:
 
     def __init__(self, retriever: HybridRetriever) -> None:
         self._retriever = retriever
+        self._planner = LegalQueryPlanner()
 
         if settings.LLM_PROVIDER.lower() == "openai":
             from openai import AsyncOpenAI
@@ -78,9 +80,14 @@ class LegalRAGGenerator:
         """
         Full RAG pipeline: Retrieve → Build EvidencePack → Generate answer.
         """
-        # 1. Retrieve
+        # 1. Plan query
+        query_plan = self._planner.plan(question)
+        logger.info(f"Query Plan generated: Strategy={query_plan.strategy}, Expanded variants={len(query_plan.expansion_variants)}")
+
+        # 2. Retrieve
         results = self._retriever.search(
             query=question,
+            query_plan=query_plan,
             top_k=top_k,
             validity_filter=validity_filter,
         )
@@ -115,9 +122,14 @@ class LegalRAGGenerator:
         Streaming version: returns search results + a generator that yields tokens.
         Supports conversation history for contextual follow-up.
         """
-        # 1. Retrieve
+        # 1. Plan query
+        query_plan = self._planner.plan(question)
+        logger.info(f"Query Plan generated (stream): Strategy={query_plan.strategy}, Expanded variants={len(query_plan.expansion_variants)}")
+
+        # 2. Retrieve
         results = self._retriever.search(
             query=question,
+            query_plan=query_plan,
             top_k=top_k,
             validity_filter=validity_filter,
         )

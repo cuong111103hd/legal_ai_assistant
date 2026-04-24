@@ -23,9 +23,10 @@ graph TD
 
     subgraph "Giai đoạn 2: Retrieval & Generation"
         User((Người dùng)) --> |Câu hỏi| API[FastAPI: /chat]
-        API --> |Hybrid Search| Retriever[src/retriever.py]
-        Retriever --> |Dense Search| Qdrant
-        Retriever --> |Sparse Search| BM25
+        API --> |Raw Query| Planner[src/planner.py]
+        Planner --> |"QueryPlan (Expanded)"| Retriever[src/retriever.py]
+        Retriever --> |"Dense Search (Original Query)"| Qdrant
+        Retriever --> |"Sparse Search (Expanded Query)"| BM25
         Qdrant & BM25 --> |Top K Results| RRF[Reciprocal Rank Fusion]
         RRF --> |Context Injection| Context[Gộp Điều/Khoản lân cận]
         Context --> |Evidence Pack| LLM[Groq: Llama-3.3-70B]
@@ -73,7 +74,8 @@ legal_AI_assistant/
 
 ### Backend (`src/`)
 *   **`main.py`**: Điều phối toàn bộ ứng dụng, quản lý quá trình khởi tạo (lifespan) và cung cấp các API endpoints.
-*   **`retriever.py`**: Trái tim của hệ thống tìm kiếm. Nó thực hiện **Hybrid Search** — kết hợp thế mạnh của Vector Search (hiểu ý nghĩa câu hỏi) và BM25 (tìm chính xác từ khóa pháp lý).
+*   **`planner.py`**: Xử lý tiền kỳ câu hỏi (Query Planning). Dịch các từ viết tắt (VD: "BLHS" -> "Bộ Luật Hình Sự"), đồng nghĩa, phủ định trước khi đưa vào tìm kiếm.
+*   **`retriever.py`**: Trái tim của hệ thống tìm kiếm. Nó thực hiện **Hybrid Search** — kết hợp thế mạnh của Vector Search (hiểu ý nghĩa câu hỏi gốc) và BM25 (tìm chính xác từ khóa pháp lý đã được mở rộng bởi Planner).
 *   **`generator.py`**: Chịu trách nhiệm giao tiếp với LLM. Nó sử dụng kỹ thuật **Evidence-based Prompting** để bắt buộc AI chỉ trả lời dựa trên những bộ luật đã tìm thấy.
 *   **`ingestion.py`**: Thực hiện "chia để trị" các văn bản luật dài hàng trăm trang thành các đoạn nhỏ (chunks) có ý nghĩa để AI dễ dàng xử lý.
 

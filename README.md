@@ -6,6 +6,7 @@ Chào mừng bạn đến với hệ thống Trợ lý Pháp luật Việt Nam t
 
 ## ✨ Tính năng chính (Features)
 
+- **🧠 Query Planner (Tiền xử lý thông minh)**: Tự động dịch các từ viết tắt (VD: "BLHS"), đồng nghĩa, và nhận diện phủ định để hiểu chính xác ý định người dùng trước khi tìm kiếm.
 - **🔍 Hybrid Search & RRF**: Kết hợp tìm kiếm Vector (Semantic) và Từ khóa (Lexical - BM25) giúp tìm kiếm chính xác kể cả khi người dùng không dùng thuật ngữ chuyên môn.
 - **📜 Deep-link Citations**: Mọi câu trả lời của AI đều đi kèm trích dẫn Điều/Khoản. Người dùng có thể nhấn vào để xem toàn văn văn bản luật gốc từ hệ thống.
 - **🧠 Thông minh & Ghi nhớ**: Tích hợp LangChain Memory cho phép hội thoại nhiều lượt, AI hiểu được các câu hỏi nối tiếp dựa trên ngữ cảnh trước đó.

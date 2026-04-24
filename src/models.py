@@ -6,7 +6,7 @@ Covers: document chunks, search results, evidence packs, API request/response.
 from __future__ import annotations
 
 from enum import Enum
-from typing import Optional
+from typing import Optional, Any
 from pydantic import BaseModel, Field
 
 
@@ -29,9 +29,31 @@ class IngestState(str, Enum):
     FAILED = "failed"
 
 
+class QueryStrategy(str, Enum):
+    """Query routing strategies."""
+    CITATION = "citation"       # Exact legal reference lookup
+    NEGATION = "negation"       # Negation-aware retrieval
+    SEMANTIC = "semantic"       # Standard hybrid retrieval
+
+
 # ---------------------------------------------------------------------------
 # Core domain models
 # ---------------------------------------------------------------------------
+
+class QueryPlan(BaseModel):
+    """Structured query plan output from the Query Planner."""
+    original_query: str
+    normalized_query: str
+    expansion_variants: list[str] = Field(default_factory=list, description="Synonym-expanded queries")
+
+    has_negation: bool = False
+    negation_scope: Optional[str] = None
+
+    citations: list[str] = Field(default_factory=list, description="Extracted legal citation patterns")
+    strategy: QueryStrategy = QueryStrategy.SEMANTIC
+
+    search_filters: dict[str, Any] = Field(default_factory=dict, description="Metadata filters for retrieval")
+
 
 class LegalChunk(BaseModel):
     """A single chunk of a legal document with metadata."""
