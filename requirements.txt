@@ -43,3 +43,7 @@ langchain-community>=0.3.0
 langchain-postgres>=0.0.9
 langchain-openai>=0.2.0
 
+# Graph Database & Utilities
+neo4j>=5.14.1
+polars>=0.20.0
+rich>=13.0.0

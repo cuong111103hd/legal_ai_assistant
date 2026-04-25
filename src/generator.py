@@ -23,6 +23,7 @@ from .models import (
     EvidencePack,
     LegalAnswer,
     SearchResult,
+    VerificationResult,
 )
 from .prompts.legal_rag import (
     CONTRACT_REVIEW_SYSTEM_PROMPT,
@@ -37,6 +38,7 @@ from .utils.text_processing import (
     extract_clause_id,
 )
 from .planner import LegalQueryPlanner
+from .verifier import LegalVerifier
 
 logger = logging.getLogger(__name__)
 
@@ -66,6 +68,8 @@ class LegalRAGGenerator:
             self._client = AsyncGroq(api_key=settings.GROQ_API_KEY)
             logger.info("Initialized AsyncGroq generator with model: %s", settings.LLM_MODEL)
 
+        self._verifier = LegalVerifier(self._client)
+
     # ------------------------------------------------------------------
     # Legal Q&A
     # ------------------------------------------------------------------
@@ -84,8 +88,8 @@ class LegalRAGGenerator:
         query_plan = self._planner.plan(question)
         logger.info(f"Query Plan generated: Strategy={query_plan.strategy}, Expanded variants={len(query_plan.expansion_variants)}")
 
-        # 2. Retrieve
-        results = self._retriever.search(
+        # 2. Retrieve (Async in Phase 3)
+        results = await self._retriever.search(
             query=question,
             query_plan=query_plan,
             top_k=top_k,
@@ -95,20 +99,49 @@ class LegalRAGGenerator:
         # 2. Build evidence pack
         evidence_pack = self._retriever.build_evidence_pack(results)
 
-        # 3. Generate
-        user_prompt = LEGAL_QA_USER_TEMPLATE.format(
-            question=question,
-            evidence_pack=evidence_pack.format_for_prompt(),
-        )
+        # 3. Generate & Verify Loop (Phase 3)
+        max_loops = 3
+        current_loop = 0
+        final_answer = None
+        last_verification = None
 
-        response_text = await self._call_llm(
-            system_prompt=LEGAL_QA_SYSTEM_PROMPT,
-            user_prompt=user_prompt,
-        )
+        while current_loop < max_loops:
+            current_loop += 1
+            logger.info("Generation Loop %d/%d", current_loop, max_loops)
 
-        # 4. Parse structured output
-        answer = self._parse_legal_answer(response_text, evidence_pack)
-        return answer
+            user_prompt = LEGAL_QA_USER_TEMPLATE.format(
+                question=question,
+                evidence_pack=evidence_pack.format_for_prompt(),
+            )
+
+            # If it's a correction loop, append the previous mistakes
+            if last_verification and last_verification.corrections:
+                user_prompt += f"\n\nLƯU Ý: Lần trả lời trước có lỗi. Hãy sửa đổi dựa trên gợi ý sau: {last_verification.corrections}"
+
+            response_text = await self._call_llm(
+                system_prompt=LEGAL_QA_SYSTEM_PROMPT,
+                user_prompt=user_prompt,
+            )
+
+            # Parse structured output
+            answer = self._parse_legal_answer(response_text, evidence_pack)
+
+            # 4. Verify (Phase 3)
+            verification = await self._verifier.verify(
+                answer=answer.answer,
+                evidence_text=evidence_pack.format_for_prompt()
+            )
+            answer.verification_result = verification
+            final_answer = answer
+            last_verification = verification
+
+            if verification.is_accurate:
+                logger.info("✅ Answer verified as accurate on loop %d", current_loop)
+                break
+            else:
+                logger.warning("⚠️ Hallucination or inaccuracy found on loop %d: %s", current_loop, verification.unsupported_claims)
+
+        return final_answer
 
     @traceable(name="Legal Q&A Streaming")
     async def answer_question_stream(
@@ -126,8 +159,8 @@ class LegalRAGGenerator:
         query_plan = self._planner.plan(question)
         logger.info(f"Query Plan generated (stream): Strategy={query_plan.strategy}, Expanded variants={len(query_plan.expansion_variants)}")
 
-        # 2. Retrieve
-        results = self._retriever.search(
+        # 2. Retrieve (Async in Phase 3)
+        results = await self._retriever.search(
             query=question,
             query_plan=query_plan,
             top_k=top_k,
@@ -218,7 +251,7 @@ class LegalRAGGenerator:
 
         # 3. Overall summary task
         summary_query = f"Quy định chung về {contract_type}"
-        summary_results = self._retriever.search(query=summary_query, top_k=5)
+        summary_results = await self._retriever.search(query=summary_query, top_k=5)
         summary_evidence = self._retriever.build_evidence_pack(summary_results)
         
         summary_task = self._call_llm(

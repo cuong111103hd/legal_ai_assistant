@@ -15,6 +15,7 @@ from sentence_transformers import SentenceTransformer
 
 from .config import settings
 from .database import QdrantManager
+from .database_neo4j import Neo4jManager
 from .models import (
     Citation,
     EvidencePack,
@@ -46,6 +47,7 @@ class HybridRetriever:
         # Dense components
         self._embed_model = SentenceTransformer(settings.EMBEDDING_MODEL)
         self._db = QdrantManager()
+        self._graph = Neo4jManager()
 
         # Sparse component
         self._bm25: Optional[BM25Index] = None
@@ -203,25 +205,79 @@ class HybridRetriever:
         # Append context chunks after the main results
         return results + extra_chunks
 
+    @traceable(name="Graph Expansion (Neo4j)")
+    async def _expand_via_graph(self, results: list[SearchResult], limit: int = 3) -> list[SearchResult]:
+        """
+        For the top results, query Neo4j for related documents and fetch their main chunks.
+        This provides horizontal context (related laws/decrees).
+        """
+        if not results:
+            return results
+
+        from rich.console import Console
+        from rich.table import Table
+        console = Console()
+
+        # Only expand the top 3 results to avoid context explosion
+        top_docs = list(dict.fromkeys([sr.chunk.document_id for sr in results[:3]]))
+        seen_ids = {sr.chunk.chunk_id for sr in results}
+        graph_chunks: list[SearchResult] = []
+        
+        table = Table(title="🌿 GraphRAG Expansion", show_header=True, header_style="bold magenta")
+        table.add_column("Original Doc ID", style="dim")
+        table.add_column("Related Doc ID", style="cyan")
+        table.add_column("Relationship", style="green")
+        table.add_column("Status", style="yellow")
+
+        found_any = False
+        for doc_id in top_docs:
+            related_ids = await self._graph.get_related_documents(doc_id, limit=limit)
+            if not related_ids:
+                table.add_row(doc_id, "None", "-", "No relations found")
+                continue
+                
+            found_any = True
+            for r_id in related_ids:
+                # Fetch the first few chunks of the related document
+                related_chunks = self._db.get_adjacent_chunks(document_id=r_id, chunk_index=0, window=2)
+                
+                added_count = 0
+                for rc in related_chunks:
+                    if rc.chunk_id not in seen_ids:
+                        seen_ids.add(rc.chunk_id)
+                        graph_chunks.append(
+                            SearchResult(chunk=rc, score=0.0, source=SearchSource.GRAPH)
+                        )
+                        added_count += 1
+                
+                table.add_row(doc_id, r_id, "RELATES_TO", f"Added {added_count} chunks")
+
+        if found_any:
+            console.print(table)
+        
+        return results + graph_chunks
+
     # ------------------------------------------------------------------
     # Main hybrid search
     # ------------------------------------------------------------------
 
     @traceable(name="Hybrid Retrieval Pipeline")
-    def search(
+    async def search(
         self,
         query: str,
         query_plan: Optional[QueryPlan] = None,
         top_k: int | None = None,
         validity_filter: Optional[str] = None,
         inject_context: bool = True,
+        use_graph: bool = True,
     ) -> list[SearchResult]:
         """
         Full hybrid search pipeline:
           1. Dense search (Qdrant)
           2. Sparse search (BM25)
           3. RRF fusion
-          4. Context injection
+          4. Graph expansion (Neo4j)
+          5. Context injection (Adjacent chunks)
 
         Args:
             query: User's legal question.
@@ -229,6 +285,7 @@ class HybridRetriever:
             top_k: Number of results (defaults to settings.TOP_K).
             validity_filter: Optional filter on validity_status.
             inject_context: Whether to fetch adjacent chunks.
+            use_graph: Whether to use Neo4j for relationship expansion.
 
         Returns:
             List of SearchResult sorted by relevance.
@@ -262,7 +319,12 @@ class HybridRetriever:
         fused = fused[:top_k]
         logger.info("RRF produced %d fused results.", len(fused))
 
-        # 4. Context injection
+        # 4. Graph expansion (GraphRAG)
+        if use_graph:
+            fused = await self._expand_via_graph(fused, limit=3)
+            logger.info("After graph expansion: %d total results.", len(fused))
+
+        # 5. Context injection
         if inject_context:
             fused = self._inject_context(fused)
             logger.info("After context injection: %d total results.", len(fused))

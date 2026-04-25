@@ -40,7 +40,13 @@ from .database_sql import (
     update_chat_session_title,
 )
 from .generator import LegalRAGGenerator
-from .ingestion import get_ingest_status, run_ingestion, run_ingestion_by_numbers, run_test_ingestion
+from .ingestion import (
+    get_ingest_status, 
+    run_full_ingestion, 
+    run_ingestion_by_numbers, 
+    run_test_ingestion,
+    stop_ingestion_task
+)
 from .models import (
     ChatMessageResponse,
     ChatRequest,
@@ -51,13 +57,13 @@ from .models import (
     ContractReviewRequest,
     ContractReviewResponse,
     IngestRequest,
+    IngestByNumbersRequest,
     IngestState,
     IngestStatus,
     LegalAnswer,
     LegalDocumentListItem,
     LegalDocumentPaginationResponse,
     LegalDocumentResponse,
-    TargetedIngestRequest,
 )
 from .retriever import HybridRetriever
 
@@ -177,24 +183,37 @@ async def health_check():
 # Endpoints — Ingestion
 # ---------------------------------------------------------------------------
 
-@app.post("/ingest", tags=["Ingestion"], response_model=IngestStatus)
-async def ingest_data(
-    background_tasks: BackgroundTasks,
-    request: Optional[IngestRequest] = None,
-    limit: Optional[int] = Query(None, ge=1),
-):
+@app.post("/ingest/download-data", tags=["Ingestion"])
+async def download_legal_data():
     """
-    Start data ingestion as a background task.
-    Use ?limit=N for testing with a subset.
+    Download all required dataset files (metadata, content, relationships) 
+    from HuggingFace to local storage.
+    """
+    from .downloader import download_all_legal_data
+    try:
+        results = await download_all_legal_data()
+        return {
+            "status": "success",
+            "files": results,
+            "message": "Data download process completed."
+        }
+    except Exception as e:
+        logger.error("Download failed: %s", e)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/ingest/full", tags=["Ingestion"], response_model=IngestStatus)
+async def ingest_full(background_tasks: BackgroundTasks, limit: Optional[int] = None):
+    """
+    Start full ingestion pipeline from local files.
+    - limit: Optional number of documents to process.
     """
     status = get_ingest_status()
     if status.state == IngestState.RUNNING:
         raise HTTPException(status_code=409, detail="Ingestion đang chạy.")
 
-    actual_limit = limit if limit is not None else (request.limit if request else None)
-    
     async def _run():
-        await run_ingestion(limit=actual_limit)
+        await run_full_ingestion(limit=limit)
         # Reload retriever indices after ingestion
         global _retriever, _generator
         try:
@@ -205,27 +224,30 @@ async def ingest_data(
             logger.error("Failed to reload retriever: %s", e)
 
     background_tasks.add_task(_run)
+    return IngestStatus(state=IngestState.RUNNING)
 
-    return IngestStatus(
-        state=IngestState.RUNNING,
-        total_documents=0,
-        processed_documents=0,
-    )
+
+@app.post("/ingest/stop", tags=["Ingestion"])
+async def stop_ingest():
+    """
+    Request to stop the current ingestion task.
+    """
+    stop_ingestion_task()
+    return {"message": "Stop request sent. Ingestion will halt shortly."}
 
 
 @app.post("/ingest/by-numbers", tags=["Ingestion"], response_model=IngestStatus)
-async def ingest_targeted(request: TargetedIngestRequest, background_tasks: BackgroundTasks):
+async def ingest_by_numbers(request: IngestByNumbersRequest, background_tasks: BackgroundTasks):
     """
-    Trigger ingestion for specific document numbers (bypass filters).
-    Runs as a background task.
+    Ingest specific documents by their so_ky_hieu.
     """
     status = get_ingest_status()
     if status.state == IngestState.RUNNING:
         raise HTTPException(status_code=409, detail="Bộ máy nạp dữ liệu đang bận.")
 
     async def _run():
-        await run_ingestion_by_numbers(request.document_numbers)
-        # Reload retriever indices after ingestion
+        await run_ingestion_by_numbers(request.doc_numbers)
+        # Reload indices
         global _retriever, _generator
         try:
             _retriever = HybridRetriever()

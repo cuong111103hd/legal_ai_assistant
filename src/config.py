@@ -53,6 +53,11 @@ class Settings(BaseSettings):
     def POSTGRES_URL_SYNC(self) -> str:
         return f"postgresql+psycopg2://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
 
+    # --- Neo4j ---
+    NEO4J_URI: str = Field(default="bolt://localhost:7687", description="Neo4j connection URI")
+    NEO4J_USER: str = Field(default="neo4j", description="Neo4j user")
+    NEO4J_PASSWORD: str = Field(default="legal_pass", description="Neo4j password")
+
     # --- Embedding ---
     EMBEDDING_MODEL: str = Field(
         default="Quockhanh05/Vietnam_legal_embeddings",

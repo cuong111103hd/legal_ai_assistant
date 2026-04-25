@@ -65,7 +65,29 @@ services:
       - "8081:8080"
     restart: unless-stopped
 
+  # ── Neo4j (Graph Database) ──────────────────────────────────────────────
+  neo4j:
+    image: neo4j:5-community
+    container_name: legal_neo4j
+    ports:
+      - "7474:7474"   # HTTP Web UI
+      - "7687:7687"   # Bolt protocol
+    environment:
+      NEO4J_AUTH: neo4j/legal_pass
+      NEO4J_apoc_export_file_enabled: "true"
+      NEO4J_apoc_import_file_enabled: "true"
+      NEO4J_apoc_import_file_use__neo4j__config: "true"
+    volumes:
+      - neo4j_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:7474 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 volumes:
   qdrant_data:
   postgres_data:
   app_data:
+  neo4j_data:

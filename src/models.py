@@ -55,6 +55,15 @@ class QueryPlan(BaseModel):
     search_filters: dict[str, Any] = Field(default_factory=dict, description="Metadata filters for retrieval")
 
 
+class VerificationResult(BaseModel):
+    """Result of the legal verification process."""
+    is_accurate: bool
+    confidence_score: float = Field(ge=0.0, le=1.0)
+    corrections: Optional[str] = None
+    hallucination_found: bool = False
+    unsupported_claims: list[str] = Field(default_factory=list)
+
+
 class LegalChunk(BaseModel):
     """A single chunk of a legal document with metadata."""
     chunk_id: str = Field(..., description="Unique ID for this chunk")
@@ -131,6 +140,7 @@ class LegalAnswer(BaseModel):
     risk_analysis: str = Field(default="", description="Risk analysis (if applicable)")
     citations: list[Citation] = Field(default_factory=list)
     evidence_pack: EvidencePack = Field(default_factory=EvidencePack)
+    verification_result: Optional[VerificationResult] = None
 
 
 class ChatResponse(BaseModel):
@@ -192,9 +202,9 @@ class IngestRequest(BaseModel):
     )
 
 
-class TargetedIngestRequest(BaseModel):
+class IngestByNumbersRequest(BaseModel):
     """Request body for /ingest/by-numbers endpoint."""
-    document_numbers: list[str] = Field(..., description="List of so_ky_hieu (e.g. ['24/2018/QH14'])")
+    doc_numbers: list[str] = Field(..., description="List of so_ky_hieu (e.g. ['24/2018/QH14'])")
 
 
 class IngestStatus(BaseModel):
