@@ -171,6 +171,38 @@ class LegalRAGGenerator:
         evidence_pack = self._retriever.build_evidence_pack(results)
 
         # 3. Create streaming generator
+        from rich.console import Console
+        from rich.table import Table
+        console = Console()
+        
+        table = Table(title="📚 Evidence Pack for LLM", show_header=True, header_style="bold cyan")
+        table.add_column("No.", style="dim", width=4)
+        table.add_column("Source", width=12)
+        table.add_column("Document Number", style="italic")
+        table.add_column("Document", style="bold")
+        table.add_column("Article", style="bright_yellow")
+        
+
+        # Map sources to colors
+        source_colors = {
+            "dense": "[green]Semantic[/green]",
+            "sparse": "[yellow]BM25[/yellow]",
+            "graph": "[bold magenta]Graph Expansion[/bold magenta]"
+        }
+
+        for i, sr in enumerate(results, 1):
+            source_tag = source_colors.get(sr.source.value if hasattr(sr.source, "value") else str(sr.source), sr.source)
+            table.add_row(
+                str(i),
+                source_tag,
+                sr.chunk.document_id,
+                sr.chunk.document_number,
+                sr.chunk.article_id
+                
+            )
+        
+        console.print(table)
+
         user_prompt = LEGAL_QA_USER_TEMPLATE.format(
             question=question,
             evidence_pack=evidence_pack.format_for_prompt(),
@@ -291,7 +323,7 @@ class LegalRAGGenerator:
         
         # Search for relevant laws for this specific clause
         search_query = f"{contract_type} {title} {content[:200]}"
-        results = self._retriever.search(query=search_query, top_k=5)
+        results = await self._retriever.search(query=search_query, top_k=5)
         evidence_pack = self._retriever.build_evidence_pack(results)
 
         from .prompts.legal_rag import (
@@ -314,13 +346,48 @@ class LegalRAGGenerator:
             json_match = re.search(r"(\{.*\})", response_text, re.DOTALL)
             if json_match:
                 data = json.loads(json_match.group(1))
-                return ContractClause(
+                clause_res = ContractClause(
                     title=title,
                     content=content,
                     analysis=data.get("analysis", ""),
                     risks=[ContractRiskItem(**r) for r in data.get("risks", [])],
                     citations=self._filter_citations(response_text, evidence_pack.citations)
                 )
+
+                # --- AI VERIFICATION STEP ---
+                try:
+                    from .prompts.legal_rag import VERIFY_CLAUSE_SYSTEM_PROMPT, VERIFY_CLAUSE_USER_TEMPLATE
+                    verify_prompt = VERIFY_CLAUSE_USER_TEMPLATE.format(
+                        clause_title=title,
+                        clause_content=content,
+                        evidence_pack=evidence_pack.format_for_prompt(),
+                        ai_response=response_text
+                    )
+                    
+                    verify_resp = await self._call_llm(
+                        system_prompt=VERIFY_CLAUSE_SYSTEM_PROMPT,
+                        user_prompt=verify_prompt
+                    )
+                    
+                    verify_match = re.search(r"(\{.*\})", verify_resp, re.DOTALL)
+                    if verify_match:
+                        v_data = json.loads(verify_match.group(1))
+                        f = float(v_data.get("faithfulness", 0.0))
+                        r = float(v_data.get("relevance", 0.0))
+                        c = float(v_data.get("correctness", 0.0))
+                        avg_score = (f + r + c) / 3.0
+                        logger.info("Verification score for %s: %.2f (F:%.2f, R:%.2f, C:%.2f)", title, avg_score, f, r, c)
+                        
+                        if avg_score >= 0.7:
+                            clause_res.verification_passed = True
+                        else:
+                            clause_res.verification_passed = False
+                            clause_res.risks = []
+                            clause_res.analysis = f"Chưa đủ dữ kiện pháp lý vững chắc để đánh giá rủi ro cho điều khoản này (Điểm kiểm chứng: {avg_score:.2f})."
+                except Exception as ve:
+                    logger.warning("Verification failed for clause %s: %s", title, ve)
+
+                return clause_res
         except Exception as e:
             logger.error("Error reviewing clause %s: %s", title, e)
             

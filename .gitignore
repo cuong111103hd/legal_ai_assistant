@@ -18,11 +18,7 @@ build/
 # AI logs — tracked structure, ignored content
 .ai-log/*.jsonl
 
-data/
-
 qdrant_storage/
 
-vanbanphapluat_reference/
-
-reference_nam/
-
+data/
+testing/

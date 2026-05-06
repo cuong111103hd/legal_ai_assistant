@@ -81,6 +81,31 @@ class ChatMessage(Base):
     session = relationship("ChatSession", back_populates="messages")
 
 
+class DocLegalRelation(Base):
+    """Stores many-to-many relationships between legal documents (Document-level or Article-level)."""
+
+    __tablename__ = "doc_legal_relations"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    
+    # Source (the doc/article that *performs* the action like amending)
+    source_doc_id = Column(String(50), ForeignKey("legal_documents.id", ondelete="CASCADE"), nullable=False)
+    source_number = Column(String(100))  # e.g. "45/2019/QH14"
+    source_article = Column(String(100)) # e.g. "Điều 5"
+    source_clause = Column(String(100))  # e.g. "khoản 2"
+    
+    # Target (the doc/article that *is* amended/replaced/revoked)
+    target_doc_id = Column(String(50), ForeignKey("legal_documents.id", ondelete="SET NULL"), nullable=True)
+    target_number = Column(String(100))  # e.g. "10/2012/QH13"
+    target_article = Column(String(100)) # e.g. "Điều 10"
+    target_clause = Column(String(100))  # e.g. "khoản 1"
+    
+    relation_type = Column(String(50))    # SUPPLEMENTS, REPLACES, REVOKES
+    level = Column(String(20), default="DOCUMENT") # DOCUMENT or ARTICLE
+    context = Column(Text)               # Extracted sentence
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
 # ---------------------------------------------------------------------------
 # Engine & Session Factory
 # ---------------------------------------------------------------------------
@@ -204,6 +229,81 @@ async def upsert_legal_documents_batch(documents: list[dict], batch_size: int = 
             logger.debug("Upserted SQL batch %d–%d", start, start + len(batch))
     logger.info("Upserted %d legal documents to PostgreSQL.", total)
     return total
+
+
+async def upsert_legal_relation(
+    source_doc_id: str,
+    source_number: str,
+    target_number: str,
+    relation_type: str,
+    level: str = "DOCUMENT",
+    source_article: str | None = None,
+    source_clause: str | None = None,
+    target_article: str | None = None,
+    target_clause: str | None = None,
+    context: str | None = None,
+) -> None:
+    """Upsert a legal relation to the database."""
+    factory = get_session_factory()
+    async with factory() as session:
+        # Check if already exists (basic deduplication)
+        stmt = select(DocLegalRelation).where(
+            DocLegalRelation.source_doc_id == source_doc_id,
+            DocLegalRelation.target_number == target_number,
+            DocLegalRelation.relation_type == relation_type,
+            DocLegalRelation.target_article == target_article,
+        )
+        res = await session.execute(stmt)
+        existing = res.scalars().first()
+        
+        if not existing:
+            session.add(DocLegalRelation(
+                source_doc_id=source_doc_id,
+                source_number=source_number,
+                source_article=source_article,
+                source_clause=source_clause,
+                target_number=target_number,
+                target_article=target_article,
+                target_clause=target_clause,
+                relation_type=relation_type,
+                level=level,
+                context=context
+            ))
+            await session.commit()
+
+
+async def resolve_all_relations() -> int:
+    """
+    Looks at all rows in doc_legal_relations where target_doc_id is NULL
+    and tries to find a matching document_number in legal_documents.
+    Returns the count of resolved relations.
+    """
+    factory = get_session_factory()
+    resolved = 0
+    async with factory() as session:
+        # Get unresolved
+        stmt = select(DocLegalRelation).where(DocLegalRelation.target_doc_id == None)
+        res = await session.execute(stmt)
+        unresolved = res.scalars().all()
+        
+        for rel in unresolved:
+            if not rel.target_number:
+                continue
+            
+            # Search for target doc ID
+            target_stmt = select(LegalDocument.id).where(LegalDocument.document_number == rel.target_number)
+            target_res = await session.execute(target_stmt)
+            # Use first() instead of scalar_one_or_none() to handle cases where multiple docs have same number
+            target_id = target_res.scalars().first()
+            
+            if target_id:
+                rel.target_doc_id = target_id
+                resolved += 1
+        
+        if resolved > 0:
+            await session.commit()
+            
+    return resolved
 
 
 async def list_legal_documents(

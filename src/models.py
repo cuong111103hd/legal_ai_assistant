@@ -19,6 +19,7 @@ class SearchSource(str, Enum):
     DENSE = "dense"
     SPARSE = "sparse"
     HYBRID = "hybrid"
+    GRAPH = "graph"
 
 
 class IngestState(str, Enum):
@@ -85,6 +86,7 @@ class Citation(BaseModel):
     document_number: str = Field(default="", description="Số hiệu văn bản, e.g. '45/2019/QH14'")
     document_id: str = Field(default="", description="Document ID for deep linking to full text")
     excerpt: str = Field(default="", description="Relevant excerpt from the article")
+    chunk_content: str = Field(default="", description="Full content of the chunk for UI display")
 
 
 
@@ -183,6 +185,7 @@ class ContractClause(BaseModel):
     analysis: str = Field(default="", description="Detailed LLM analysis of this specific clause")
     risks: list[ContractRiskItem] = Field(default_factory=list)
     citations: list[Citation] = Field(default_factory=list)
+    verification_passed: bool = Field(default=False, description="Did it pass AI verification?")
 
 
 class ContractReviewResponse(BaseModel):
@@ -200,6 +203,8 @@ class IngestRequest(BaseModel):
         ge=1,
         description="Limit number of documents to ingest (for testing)",
     )
+    prefix: str = Field(default="", description="File prefix, e.g. 'addition_'")
+    recreate: bool = Field(default=True, description="Whether to recreate indices or upsert")
 
 
 class IngestByNumbersRequest(BaseModel):

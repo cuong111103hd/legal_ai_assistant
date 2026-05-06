@@ -1,13 +1,11 @@
 """
-Hybrid retriever: Dense (Qdrant) + Sparse (BM25) + Reciprocal Rank Fusion.
+Hybrid retriever: Dense (Qdrant) + Sparse (OpenSearch) + Reciprocal Rank Fusion.
 Includes context injection for surrounding articles.
 """
 
 from __future__ import annotations
 
 import logging
-import os
-import pickle
 from typing import Optional
 from langsmith import traceable
 
@@ -20,11 +18,10 @@ from .models import (
     Citation,
     EvidencePack,
     LegalChunk,
-    QueryPlan,
     SearchResult,
     SearchSource,
 )
-from .utils.bm25_index import BM25Index
+from .database_opensearch import OpenSearchManager
 from .utils.text_processing import (
     extract_article_id,
     extract_clause_id,
@@ -49,37 +46,14 @@ class HybridRetriever:
         self._db = QdrantManager()
         self._graph = Neo4jManager()
 
-        # Sparse component
-        self._bm25: Optional[BM25Index] = None
-        self._chunk_lookup: dict[str, dict] = {}
-        self._load_bm25()
+        # Sparse component (OpenSearch)
+        self._opensearch = OpenSearchManager()
 
         logger.info("HybridRetriever ready.")
 
-    # ------------------------------------------------------------------
-    # Internal loaders
-    # ------------------------------------------------------------------
-
-    def _load_bm25(self) -> None:
-        """Load BM25 index and chunk metadata from disk if available."""
-        if os.path.exists(settings.BM25_INDEX_PATH):
-            try:
-                self._bm25 = BM25Index.load(settings.BM25_INDEX_PATH)
-            except Exception as e:
-                logger.warning("Failed to load BM25 index: %s", e)
-                self._bm25 = None
-
-        if os.path.exists(settings.CHUNKS_METADATA_PATH):
-            try:
-                with open(settings.CHUNKS_METADATA_PATH, "rb") as f:
-                    self._chunk_lookup = pickle.load(f)
-                logger.info("Loaded %d chunk metadata entries.", len(self._chunk_lookup))
-            except Exception as e:
-                logger.warning("Failed to load chunk metadata: %s", e)
-
     def reload_indices(self) -> None:
-        """Reload BM25 and chunk metadata (called after ingestion)."""
-        self._load_bm25()
+        """Reload chunk metadata (called after ingestion)."""
+        pass # OpenSearch handles updates dynamically
 
     # ------------------------------------------------------------------
     # Encode query
@@ -111,26 +85,20 @@ class HybridRetriever:
         return self._db.search_dense(vector, top_k=top_k, validity_filter=validity_filter)
 
     # ------------------------------------------------------------------
-    # Sparse (BM25) search
+    # Sparse (OpenSearch) search
     # ------------------------------------------------------------------
 
-    @traceable(name="Sparse Search (BM25)")
+    @traceable(name="Sparse Search (OpenSearch)")
     def search_sparse(self, query: str, top_k: int = 10) -> list[SearchResult]:
-        """Run BM25 sparse search."""
-        if not self._bm25 or not self._bm25.is_built:
-            logger.warning("BM25 index not available. Returning empty results.")
+        """Run Lexical sparse search using OpenSearch."""
+        if not self._opensearch.ping():
+            logger.warning("OpenSearch not available. Returning empty sparse results.")
             return []
 
-        hits = self._bm25.search(query, top_k=top_k)
+        hits = self._opensearch.search(query, top_k=top_k)
         results: list[SearchResult] = []
 
-        for chunk_id, score in hits:
-            meta = self._chunk_lookup.get(chunk_id)
-            if meta:
-                chunk = LegalChunk(**meta)
-            else:
-                chunk = LegalChunk(chunk_id=chunk_id, document_id="", content="")
-
+        for chunk, score in hits:
             results.append(SearchResult(chunk=chunk, score=score, source=SearchSource.SPARSE))
 
         return results
@@ -158,6 +126,7 @@ class HybridRetriever:
         """
         scores: dict[str, float] = {}
         chunk_map: dict[str, LegalChunk] = {}
+        source_map: dict[str, Any] = {}
 
         for results in result_lists:
             for rank, sr in enumerate(results, start=1):
@@ -165,9 +134,14 @@ class HybridRetriever:
                 scores[cid] = scores.get(cid, 0.0) + 1.0 / (k + rank)
                 if cid not in chunk_map:
                     chunk_map[cid] = sr.chunk
+                    source_map[cid] = sr.source
 
         fused = [
-            SearchResult(chunk=chunk_map[cid], score=score, source=SearchSource.HYBRID)
+            SearchResult(
+                chunk=chunk_map[cid], 
+                score=score, 
+                source=source_map[cid]  # Sử dụng source đã lưu thay vì .HYBRID
+            )
             for cid, score in sorted(scores.items(), key=lambda x: x[1], reverse=True)
         ]
 
@@ -183,6 +157,7 @@ class HybridRetriever:
         full legal context (surrounding Điều).
         """
         window = settings.CONTEXT_WINDOW
+        logger.info(f"Injecting context with window size {window}")
         if window <= 0:
             return results
 
@@ -368,6 +343,7 @@ class HybridRetriever:
                     document_number=doc_num,
                     document_id=chunk.document_id,
                     excerpt=excerpt,
+                    chunk_content=chunk.content,
                 )
             )
 

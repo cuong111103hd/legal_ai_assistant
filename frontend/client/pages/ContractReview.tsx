@@ -27,6 +27,7 @@ interface ReviewedClause {
   analysis: string;
   risks: RiskItem[];
   citations: Citation[];
+  verification_passed?: boolean;
 }
 
 interface ReviewResult {
@@ -42,7 +43,7 @@ export default function ContractReview() {
   const [contractText, setContractText] = useState("");
   const [result, setResult] = useState<ReviewResult | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [viewingDocId, setViewingDocId] = useState<string | null>(null);
+  const [viewingCitation, setViewingCitation] = useState<Citation | null>(null);
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -92,9 +93,7 @@ export default function ContractReview() {
 
   // Handle citation click — open DocumentViewer overlay
   const handleCitationClick = (cite: Citation) => {
-    if (cite.document_id) {
-      setViewingDocId(cite.document_id);
-    }
+    setViewingCitation(cite);
   };
 
   return (
@@ -124,11 +123,12 @@ export default function ContractReview() {
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-8">
-          <div className="max-w-5xl mx-auto space-y-8">
-            {/* Upload Area */}
-            {!result && !isUploading && (
-              <div className="flex flex-col items-center justify-center min-h-[400px] border-2 border-dashed border-slate-200 rounded-3xl bg-white p-12 text-center transition-all hover:border-primary/50 group">
+        {!result ? (
+          <div className="flex-1 overflow-y-auto p-8">
+            <div className="max-w-5xl mx-auto space-y-8">
+              {/* Upload Area */}
+              {!isUploading && (
+                <div className="flex flex-col items-center justify-center min-h-[400px] border-2 border-dashed border-slate-200 rounded-3xl bg-white p-12 text-center transition-all hover:border-primary/50 group">
                 <div className="w-20 h-20 bg-primary/5 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                   <Upload className="w-10 h-10 text-primary" />
                 </div>
@@ -174,10 +174,34 @@ export default function ContractReview() {
                 </div>
               </div>
             )}
+          </div>
+        </div>
+        ) : (
+          <div className="flex-1 flex overflow-hidden">
+            {/* Left Pane: Original Text */}
+            <div className="flex-1 flex flex-col bg-white border-r border-slate-200">
+               {/* Fixed Header */}
+               <div className="px-8 py-5 border-b border-slate-100 bg-white z-10 flex-shrink-0">
+                 <div className="max-w-3xl mx-auto w-full">
+                   <h2 className="text-xl font-bold text-slate-900">
+                      Toàn văn Hợp đồng
+                   </h2>
+                 </div>
+               </div>
+               
+               {/* Scrollable Content */}
+               <div className="flex-1 overflow-y-auto p-8 pt-6">
+                 <div className="max-w-3xl mx-auto">
+                   <div className="whitespace-pre-wrap font-serif text-slate-800 leading-relaxed text-base">
+                     {contractText}
+                   </div>
+                 </div>
+               </div>
+            </div>
 
-            {/* Results Display */}
-            {result && (
-              <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 space-y-8 pb-12">
+            {/* Right Pane: Analysis */}
+            <div className="w-[480px] flex-shrink-0 overflow-y-auto bg-slate-50 p-6 shadow-[-4px_0_15px_rgba(0,0,0,0.02)] z-10 relative">
+               <div className="animate-in fade-in slide-in-from-right-8 duration-700 space-y-8 pb-12">
                 {/* Overall Summary Card */}
                 <Card className="p-8 border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] bg-gradient-to-br from-indigo-900 to-slate-900 text-white rounded-[2rem] overflow-hidden relative">
                   <div className="absolute top-0 right-0 p-8 opacity-10">
@@ -194,7 +218,7 @@ export default function ContractReview() {
 
                 {/* Overall Risks Grid */}
                 {result.overall_risks.length > 0 && (
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="flex flex-col gap-4">
                     {result.overall_risks.slice(0, 3).map((risk, i) => (
                       <div
                         key={i}
@@ -242,29 +266,39 @@ export default function ContractReview() {
                         className="border-none shadow-sm overflow-hidden rounded-2xl bg-white p-5 border border-slate-100"
                       >
                         <div className="flex flex-col gap-3">
-                          <div className="flex items-start justify-between gap-4 border-b border-slate-50 pb-3">
+                          <div className="flex flex-col gap-3 border-b border-slate-50 pb-3">
+                            {/* Row 1: Number & Risk Badge */}
+                            <div className="flex items-center justify-between">
+                              <span className="flex-shrink-0 w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-sm font-bold">
+                                {idx + 1}
+                              </span>
+                              <div className="flex-shrink-0">
+                                {clause.risks.length > 0 ? (
+                                  <Badge className="bg-red-100 text-red-700 hover:bg-red-200 border-none px-3 py-1 text-sm flex items-center gap-1 whitespace-nowrap">
+                                    <ShieldAlert size={14} /> Có rủi ro ({clause.risks.length})
+                                  </Badge>
+                                ) : (
+                                  <Badge className="bg-green-100 text-green-700 hover:bg-green-200 border-none px-3 py-1 text-sm flex items-center gap-1 whitespace-nowrap">
+                                    <CheckCircle2 size={14} /> Tuân thủ luật
+                                  </Badge>
+                                )}
+                              </div>
+                            </div>
+                            
+                            {/* Row 2: Title & Verification Badge */}
                             <div>
-                              <h4 className="font-bold text-slate-900 text-lg flex items-center gap-2">
-                                <span className="flex-shrink-0 w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-sm">
-                                  {idx + 1}
-                                </span>
+                              <h4 className="font-bold text-slate-900 text-lg leading-snug inline">
                                 {clause.title}
                               </h4>
-                            </div>
-                            <div className="flex-shrink-0">
-                              {clause.risks.length > 0 ? (
-                                <Badge className="bg-red-100 text-red-700 hover:bg-red-200 border-none px-3 py-1 text-sm flex items-center gap-1">
-                                  <ShieldAlert size={14} /> Có rủi ro / Vi phạm ({clause.risks.length})
-                                </Badge>
-                              ) : (
-                                <Badge className="bg-green-100 text-green-700 hover:bg-green-200 border-none px-3 py-1 text-sm flex items-center gap-1">
-                                  <CheckCircle2 size={14} /> Tuân thủ luật
+                              {clause.verification_passed && (
+                                <Badge variant="outline" className="bg-emerald-50 text-emerald-600 border-emerald-200 ml-2 shadow-sm pointer-events-none text-xs inline-flex items-center align-middle whitespace-nowrap relative -top-0.5">
+                                  <CheckCircle2 className="w-3 h-3 mr-1" /> Đã kiểm chứng bởi AI
                                 </Badge>
                               )}
                             </div>
                           </div>
 
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-2">
+                          <div className="flex flex-col gap-6 mt-2">
                             <div className="space-y-2">
                               <h5 className="text-xs font-bold text-slate-400 uppercase tracking-widest">Nội dung trích xuất</h5>
                               <p className="text-slate-600 text-sm leading-relaxed italic bg-slate-50 p-3 rounded-xl border border-slate-100">
@@ -322,15 +356,15 @@ export default function ContractReview() {
                   </div>
                 </div>
               </div>
-            )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Document Viewer Overlay */}
       <DocumentViewer
-        documentId={viewingDocId}
-        onClose={() => setViewingDocId(null)}
+        citation={viewingCitation}
+        onClose={() => setViewingCitation(null)}
       />
     </div>
   );

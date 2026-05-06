@@ -195,6 +195,7 @@ class QdrantManager:
                 content=payload.get("content", ""),
                 validity_status=payload.get("validity_status", ""),
                 doc_type=payload.get("doc_type", ""),
+                document_number=payload.get("document_number", ""),
                 chunk_index=payload.get("chunk_index", 0),
             )
             results.append(SearchResult(chunk=chunk, score=hit.score, source=SearchSource.DENSE))
@@ -228,6 +229,7 @@ class QdrantManager:
                     content=payload.get("content", ""),
                     validity_status=payload.get("validity_status", ""),
                     doc_type=payload.get("doc_type", ""),
+                    document_number=payload.get("document_number", ""),
                     chunk_index=payload.get("chunk_index", 0),
                 )
             )
@@ -279,6 +281,7 @@ class QdrantManager:
                         content=payload.get("content", ""),
                         validity_status=payload.get("validity_status", ""),
                         doc_type=payload.get("doc_type", ""),
+                        document_number=payload.get("document_number", ""),
                         chunk_index=payload.get("chunk_index", 0),
                     )
                 )

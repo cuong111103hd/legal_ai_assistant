@@ -28,7 +28,7 @@ export default function Index() {
   const { sessionId } = useParams<{ sessionId?: string }>();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeSessionId, setActiveSessionId] = useState<string | null>(sessionId || null);
-  const [viewingDocId, setViewingDocId] = useState<string | null>(null);
+  const [viewingCitation, setViewingCitation] = useState<Citation | null>(null);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
@@ -179,8 +179,8 @@ export default function Index() {
     }
   };
 
-  const handleCitationClick = (docId: string) => {
-    setViewingDocId(docId);
+  const handleCitationClick = (cite: Citation) => {
+    setViewingCitation(cite);
   };
 
   return (
@@ -305,8 +305,8 @@ export default function Index() {
 
       {/* Document Viewer Overlay */}
       <DocumentViewer
-        documentId={viewingDocId}
-        onClose={() => setViewingDocId(null)}
+        citation={viewingCitation}
+        onClose={() => setViewingCitation(null)}
       />
     </div>
   );

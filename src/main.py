@@ -12,6 +12,7 @@ FastAPI application with endpoints for:
 """
 
 from __future__ import annotations
+from langsmith import traceable
 
 import json
 import logging
@@ -42,7 +43,7 @@ from .database_sql import (
 from .generator import LegalRAGGenerator
 from .ingestion import (
     get_ingest_status, 
-    run_full_ingestion, 
+    run_ingestion_pipeline, 
     run_ingestion_by_numbers, 
     run_test_ingestion,
     stop_ingestion_task
@@ -203,17 +204,19 @@ async def download_legal_data():
 
 
 @app.post("/ingest/full", tags=["Ingestion"], response_model=IngestStatus)
-async def ingest_full(background_tasks: BackgroundTasks, limit: Optional[int] = None):
+async def ingest_full(background_tasks: BackgroundTasks, request: IngestRequest):
     """
     Start full ingestion pipeline from local files.
     - limit: Optional number of documents to process.
+    - prefix: Optional file prefix (e.g. 'addition_').
+    - recreate: Whether to clear existing data or just add new.
     """
     status = get_ingest_status()
     if status.state == IngestState.RUNNING:
         raise HTTPException(status_code=409, detail="Ingestion đang chạy.")
 
     async def _run():
-        await run_full_ingestion(limit=limit)
+        await run_ingestion_pipeline(limit=request.limit, prefix=request.prefix, recreate=request.recreate)
         # Reload retriever indices after ingestion
         global _retriever, _generator
         try:
@@ -295,6 +298,7 @@ async def ingest_status():
 # ---------------------------------------------------------------------------
 
 @app.post("/chat", tags=["Chat"])
+@traceable(name="Streaming Chat Endpoint")
 async def chat(request: ChatWithMemoryRequest):
     """
     Legal Q&A with streaming Server-Sent Events + Conversation Memory.
@@ -320,7 +324,7 @@ async def chat(request: ChatWithMemoryRequest):
     try:
         results, token_stream = await generator.answer_question_stream(
             question=request.question,
-            top_k=request.top_k,
+            top_k=settings.TOP_K,
             validity_filter=request.filter_validity,
             history_messages=history_messages,
         )
@@ -375,6 +379,7 @@ async def chat(request: ChatWithMemoryRequest):
 # ---- Chat (non-streaming, for simplicity) --------------------------------
 
 @app.post("/chat/sync", tags=["Chat"], response_model=ChatResponse)
+@traceable(name="Sync Chat Endpoint")
 async def chat_sync(request: ChatRequest):
     """
     Non-streaming legal Q&A. Returns full structured answer.

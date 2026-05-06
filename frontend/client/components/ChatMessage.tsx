@@ -18,7 +18,7 @@ interface ChatMessageProps {
   content: string;
   citations?: Citation[];
   isStreaming?: boolean;
-  onCitationClick?: (documentId: string) => void;
+  onCitationClick?: (citation: Citation) => void;
 }
 
 const headerMap: Record<string, { label: string; icon: any; colorClass: string; borderClass: string }> = {
@@ -143,7 +143,7 @@ export function ChatMessage({
                   )}
                   onClick={() => {
                     if (cite.document_id && onCitationClick) {
-                      onCitationClick(cite.document_id);
+                      onCitationClick(cite);
                     }
                   }}
                 >

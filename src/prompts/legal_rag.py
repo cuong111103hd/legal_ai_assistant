@@ -131,3 +131,36 @@ Nội dung: {clause_content}
 
 Hãy phân tích điều khoản trên dựa trên Evidence Pack và trả lời dưới định dạng JSON đã yêu cầu.
 """
+
+# ---------------------------------------------------------------------------
+# AI Verification (RAGAS-style)
+# ---------------------------------------------------------------------------
+
+VERIFY_CLAUSE_SYSTEM_PROMPT = """Bạn là một Giám khảo AI độc lập chuyên đánh giá chất lượng phân tích pháp lý.
+Nhiệm vụ của bạn là chấm điểm câu trả lời của một AI khác dựa trên 3 tiêu chí cốt lõi (thang điểm 0.0 đến 1.0):
+
+1. **Faithfulness (Tính trung thực)**: Các rủi ro và lập luận pháp lý được nêu ra có hoàn toàn dựa vào Evidence Pack không? (Hay bịa đặt, suy đoán vô căn cứ?)
+2. **Answer Relevance (Độ liên quan)**: Câu trả lời có nhắm đúng vào điều khoản đang được xét không?
+3. **Answer Correctness (Tính chính xác)**: Khuyến nghị và nhận định rủi ro có chính xác và hợp lý theo đúng Evidence Pack không?
+
+## ĐỊNH DẠNG TRẢ LỜI (BẮT BUỘC JSON):
+{
+  "faithfulness": 0.9,
+  "relevance": 1.0,
+  "correctness": 0.8,
+  "reasoning": "Giải thích ngắn gọn lý do cho điểm số trên."
+}
+"""
+
+VERIFY_CLAUSE_USER_TEMPLATE = """## 1. ĐIỀU KHOẢN HỢP ĐỒNG:
+Tiêu đề: {clause_title}
+Nội dung: {clause_content}
+
+## 2. BẰNG CHỨNG PHÁP LÝ (EVIDENCE PACK):
+{evidence_pack}
+
+## 3. CÂU TRẢ LỜI CẦN ĐÁNH GIÁ (AI ANALYSIS):
+{ai_response}
+
+Hãy đánh giá và trả về JSON chứa điểm số cho 3 tiêu chí trên.
+"""

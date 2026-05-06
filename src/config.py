@@ -38,6 +38,14 @@ class Settings(BaseSettings):
         description="Use in-memory Qdrant (no Docker needed, for dev only)",
     )
 
+    # --- OpenSearch ---
+    OPENSEARCH_HOST: str = Field(default="localhost", description="OpenSearch host")
+    OPENSEARCH_PORT: int = Field(default=9200, description="OpenSearch port")
+    OPENSEARCH_INDEX: str = Field(
+        default="vietnamese_legal",
+        description="OpenSearch index name",
+    )
+
     # --- PostgreSQL ---
     POSTGRES_HOST: str = Field(default="localhost", description="PostgreSQL host")
     POSTGRES_PORT: int = Field(default=5432, description="PostgreSQL port")
@@ -80,10 +88,10 @@ class Settings(BaseSettings):
     CHUNK_OVERLAP: int = Field(default=200, description="Overlap between chunks")
 
     # --- Retrieval ---
-    TOP_K: int = Field(default=10, description="Number of results to retrieve")
+    TOP_K: int = Field(default=30, description="Number of results to retrieve")
     RRF_K: int = Field(default=60, description="RRF constant k")
     CONTEXT_WINDOW: int = Field(
-        default=1,
+        default=0,
         description="Number of adjacent articles to fetch for context injection",
     )
 
